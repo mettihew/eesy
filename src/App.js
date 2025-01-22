@@ -24,7 +24,7 @@ function App() {
     const [modal, setModal] = useState(false);
 
   return (
-    <BrowserRouter basename="/" >
+    <BrowserRouter basename="/eesy" >
       <div className={modal ? "blackModal" : ""} />
       <Header onBlur={ev => setModal(ev)} />
       <Routes>
