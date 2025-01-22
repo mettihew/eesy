@@ -1,0 +1,485 @@
+import { useState, useEffect, useRef } from "react";
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import { useLocation } from "react-router";
+
+import { FaAngleRight, FaAngleUp, FaHeart } from 'react-icons/fa'
+import { FaCodeCompare } from "react-icons/fa6";
+import LoginModal from '../components/LoginModal'
+import ProductCard from "../components/ProductCard";
+import axios from "axios";
+import { URL } from "../utils/URL";
+import { FaAngleDoubleRight } from "react-icons/fa";
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
+function SingleProduct() {
+  const [colorDiv, setColorDiv] = useState()
+  const [showMore, setShowMore] = useState(false)
+  const [colorErr, setColorErr] = useState(false)
+  const location = useLocation()
+  const pId = location.pathname.split("/")[2]
+  const [similar, setSimilar] = useState()
+  const [loadingAdd, setLoadingAdd] = useState(false)
+  const [loadingFav, setLoadingFav] = useState(false)
+  const [loadingCom, setLoadingCom] = useState(false)
+  const [reviewErr, setReviewErr] = useState(false)
+  const reviewRef = useRef()
+  const ratingRef = useRef()
+
+  const [data, setData] = useState(null)
+  const user = JSON.parse(localStorage.getItem('user'))
+  const [inCart, setInCart] = useState()
+
+  useEffect(() => {
+    // GET THE PRODUCT
+    if(!data){
+     axios.get(`${URL}/product/${pId}`)
+    .then(res => setData(res.data))
+    .catch(err => alert(err.request.response))
+
+    // IS THE PRODUCT IN MY CART?
+    const user = JSON.parse(localStorage.getItem('user'))
+    if(user){
+      const cart = user.cart.find(ev => {
+        return ev.pId === pId
+      })
+      setInCart(cart)
+
+    // MAKING HISTORY
+    axios.post(`${URL}/add-history`, {pId, uId: user._id})
+    .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
+  }
+
+  
+}
+
+    //similar products
+    if(data){
+       axios.post(`${URL}/home-cat`, {category: data.category})
+      .then((res) => setSimilar(res.data))
+    }
+  }, [data]) // "data" is important for getting suggestions
+
+  if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>
+
+  const addHandler = (ev) => {
+    if (!colorDiv) return setColorErr(true)
+    setColorDiv(ev)
+    axios.post(`${URL}/add-to-cart`, { pId: data._id, uId: user._id, color: colorDiv })
+    .then(res => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      window.location.reload()
+    })
+    .catch((err) => alert(err.request.response))
+  }
+
+  const increaseHandler = () => {
+    setLoadingAdd(true)
+    axios.post(`${URL}/increase-cart`, { pId: data._id, uId: user._id, qty: inCart.qty + 1, color: inCart.color })
+    .then(res => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      const cart = res.data.cart.find(ev => {
+        return ev.pId === pId
+      })
+      setInCart(cart)
+      setLoadingAdd(false)
+    })
+    .catch((err) => alert(err.request.response))
+  }
+
+  const removeHandler = () => {
+    setLoadingAdd(true)
+    setColorErr(false)
+    axios.post(`${URL}/remove-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
+    .then(res => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      const cart = res.data.cart.find(ev => {
+        return ev.pId === pId
+      })
+      setInCart(cart)
+      setLoadingAdd(false)
+    })
+    .catch((err) => alert(err.request.response))
+  }
+
+  const handleFavorite = () => {
+    setLoadingFav(true)
+    axios.post(`${URL}/add-to-favorite`, { pId: data._id, uId: user._id })
+    .then((res) => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      setLoadingFav(false)
+  })
+    .catch((err) => alert(err.request.response))
+  };
+
+  const handleCompare = () => {
+    setLoadingCom(true)
+    axios.post(`${URL}/add-to-compare`, { pId: data._id, uId: user._id })
+    .then((res) => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      setLoadingCom(false)
+  })
+    .catch((err) => alert(err.request.response))
+  };
+
+  const reviewHandler = (ev) => {
+    ev.preventDefault()
+    setReviewErr(false)
+    const review = reviewRef.current.value
+    const rating = Number(ratingRef.current.value)
+  
+    if(!review || !rating) return setReviewErr("review and rating are required")
+    axios 
+     .post(`${URL}/review`, {uId: user._id, pId, review, rating })
+     .then(() => window.location.reload())
+     .catch((err) => alert(err.request.response))
+  }
+
+  let arr = []
+  data.review.map(ev => arr.push(Number(ev.rating)))
+  if(arr.length === 0) arr = [0]
+  const reviewAverage = array => array.reduce((a, b) => a + b) / array.length;
+
+  let fav = user?.favorite?.find(ev => {
+    return ev === pId
+      })
+
+  let com = user?.compare?.find(ev => {
+    return ev === pId
+      })
+      
+  return (
+    <div className="single-product container" >
+
+      {/* DON'T DELETE BELOW DIV, IT REALLY IMPORTANT FOR THE PAGE'S RESPONSIVNESS, ZOOM IN AND OUT TO SEE THE RESULT */}
+<div className="I-AM-VERY-IMPORTANT">
+
+        {/* WHERE AM I? */}
+        <div className="whereAmI py-4">
+          <a href={``} >Home</a>
+          <FaAngleRight color="gray" size="12px" />
+          <a href={`/products`} >Products</a>
+          <FaAngleRight color="gray" size="12px" />
+          <a href={`/category?cat=${data.category}`} >{data.category}</a>
+          <FaAngleRight color="gray" size="12px" />
+        </div>
+
+        {/* MAIN ----------------------------------------------------------------------------------------------------------- */}
+        <div className="single-first-line">
+          {/* 3 - images */}
+          <div className="single-product-images">
+              <Zoom><img alt="title" src={data.images.title} width={"340px"} /></Zoom>
+            <div className="single-product-images-others-div">
+              {data.images.others.map((ev, i) => (
+                 <Zoom key={i}><img alt="others"src={ev} className="others"/></Zoom> 
+              ))} 
+            </div>
+          </div>
+          {/* } */}
+
+          <div className="single-product-login-and-all-the-information">
+
+            {/* 2 - ALL THE INFORMATION AND DETAILS ABOUT THE PRODUCT THAT YOU CAN SEE */}
+            <div id="col">
+
+              <h4 className="name-width">{data.name}</h4>
+              {data.en_name && <p className="name-width">{data.en_name}</p>}
+
+              <div className="blue">
+                <p> برند  : {data.brand} </p>
+
+                <div id="a-c">
+                  <p style={{ color: 'yellow', marginRight: '5px' }}></p>
+                </div>
+                {/* <p> - {rate.length} نظر دهی</p> */}
+
+                <p className="line" >
+                  | 32 answered questions
+                </p>
+              </div>
+
+              <div id="d-f" className="gap-10">
+                <p>Price :</p>
+                <h5 className="text-danger">${data.price}</h5>
+              </div>
+
+              <p>Color :</p>
+
+              {colorDiv && <div className="d-flex my-2 gap-10"> 
+                <p className="py-1">Selected color:</p>
+                <div className="color-global " style={{ backgroundColor: colorDiv }} />
+                <p className="py-1">{colorDiv}</p>
+              </div>}
+
+<div id="d-f" className="gap-30">
+               {data.color.map((ev, i) => (
+                <div key={i}>
+                  <div onClick={() => setColorDiv(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
+                  <p>{ev}</p>
+                </div>
+              ))} 
+</div>
+
+
+              <p className="blue">Size Chart</p>
+              {/* <p>. 100% Cotton</p> */}
+              {/* <p>. Imported</p> */}
+              {/* <p>. Lace Up closure</p> */}
+              {/* <p>. Machine Wash</p> */}
+              {/* <p>{data[0]?.description}</p> */}
+              <p>{data.feauture}</p>
+            </div>
+
+
+            {/* 1 - LOGIN  */}
+
+
+<div>
+{user ?
+  <>
+<div>
+          {(!colorDiv) && !colorErr && <p>Select color to order</p>}
+          {colorErr && !colorDiv && <p className="text-danger">Select color first</p>}
+          {(colorDiv) && <p className="text-success">You are ready to Order</p>}
+          {inCart ? 
+          <div id="j-c">
+<ButtonGroup>
+    <Button aria-label="reduce" onClick={() =>  removeHandler() }><RemoveIcon fontSize="small" /></Button>
+    {loadingAdd ? <h1>...</h1> : <h1>{inCart.qty}</h1>}
+    <Button aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
+</ButtonGroup>
+</div>
+    : 
+        <button className="add-to-cart-button" type="submit" onClick={addHandler}>Add to Your Cart</button>
+  }
+</div>
+
+    {loadingFav ? 
+        <h1>...</h1>
+        :
+        <>
+          {fav ?
+          // YOU HAVE THE PRODUCT
+            <div className="single-product-add-to-cart-button d-flex" id="j-c">
+              <p className="blue" style={{ fontSize: 'small' }}> In your favorite list </p> &nbsp;
+              <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleFavorite}> / delete &nbsp;</p>
+
+                <button className="add-to-list-button"> 
+                <FaHeart color="red" /> 
+                </button> 
+            </div>
+            :
+          // DO NOT HAVE THE PRODUCT
+              <div className="single-product-add-to-cart-button" id="ac">
+              {/* <p style={{ color: 'blue', fontSize:'small'}}>افزودن به لیست من</p> */}
+            <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite<FaHeart color="black" /></button>
+              </div>
+          }
+        </>
+    }
+
+    {loadingCom ? 
+        <h1>...</h1>
+        :
+        <>
+          {com ?
+          // YOU HAVE THE PRODUCT
+            <div className="single-product-add-to-cart-button d-flex">
+              <a href="compare-product" className="blue" style={{ fontSize: 'small' }}>Go To Compare</a> &nbsp;
+              <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleCompare}> / حذف</p>
+                <button className="add-to-list-button"> 
+                <FaCodeCompare color="red" /> 
+                </button> 
+            </div>
+            :
+          // DO NOT HAVE THE PRODUCT
+              <div className="single-product-add-to-cart-button" id="ac">
+              {/* <p style={{ color: 'blue', fontSize:'small'}}>Add to Compare Product</p> */}
+            <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
+            </div>
+          }
+        </>
+    }
+  </>
+:
+    // LOGIN - NOT ADD 
+    <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
+      <LoginModal name="single-product-like" />
+    </i>
+}
+</div>
+
+
+
+            </div>
+          </div>
+
+
+        {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
+        {/* here outside of the main - this is the next line - hidden stuff (shoe more) */}
+        <div>
+          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue single-product-show-more" onClick={() => setShowMore(true)}>See more detail</p>}
+        </div>
+
+{showMore &&
+          <div id='d-g' className="single-product-text-align p-5">
+            <div style={{ padding: "30px 0" }} className="line" />
+
+            <h5 style={{ marginTop: '50px' }}>weight</h5>
+            <p className="p-3" style={{ marginRight: '170px' }}>{data.weight} weight</p>
+
+            <h5 style={{ marginTop: '50px' }}>height</h5>
+            <p className="p-3" style={{ marginRight: '170px' }}>{data.height} height</p>
+
+            <h5 style={{ marginTop: '50px' }}>depth</h5>
+            <p className="p-3" style={{ marginRight: '170px' }}>{data.depth} depth </p>
+          </div>
+}
+
+        {/* MEN AND REVIEW / THE LAST THINGS IN THE PAGE */}
+        {/* men  */}
+        <p style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft: "30px", }} className="line" />
+
+        <div id="t-a-c">
+          <img src={data.images.special} alt="special" width="80%" />
+        </div>
+
+        <div className="m-4">
+          <h5>Product Description</h5>
+          {/* <p style={{ paddingBottom: "10px", marginLeft: "30px", }} className="line">This product is really awesome and some details will be here soon..</p> */}
+
+          <h4>Product Details</h4>
+          <div style={{ paddingBottom: "10px", marginLeft: "30px", }} className="line" >
+
+          </div>
+
+          <div style={{ padding: "30px 0" }} className="line" >
+            <h4>Report issue</h4>
+            <div className="d-flex">
+              <p>Click here to report a problem with this product</p>
+              <p className="text-info" id="c-p">, کلیک کنید .</p>
+            </div>
+          </div>
+          <div className="d-flex" style={{ marginTop: "40px" }}>
+
+            <div>
+                <div className="blue" id="d-f">
+                    <div className="front" />
+                    <div className="back" />
+                </div>
+              <div className="col">
+                <div className="between">
+                  <h4>Review with images</h4>
+                  <p className="blue">See all photos</p>
+                </div>
+                <div className="align" style={{ borderBottom: "1px solid grey", paddingBottom: "30px" }}>
+                  <i className="fa fa-arrow-left" />
+                  <div className="d-flex">
+                    {data.images.others.map((ev,i) => (
+                  <Zoom key={i} ><img alt="person" src={ev} className="personal-images"/></Zoom> 
+                     ))} 
+                  </div>
+                  <i className="fa fa-arrow-right" />
+                </div>
+              
+              </div>
+            </div>
+          </div>
+
+          {/* DESCRIPTION */}
+          <section className="py-5 gray">
+                <h3>توضیحات</h3>
+                  <p>A really good something</p>
+          </section>
+
+          {/* REVIEW */}
+
+          <section className="col-12" id="review" >
+
+                <div id="between">
+                  <h3>Reviews</h3>
+                  <p>Write a Review</p>
+                </div>
+
+                <p className="mb-0">Based on {data.review.length} Reviews</p>
+                {reviewAverage === 0 ? 
+                <p className="text-warning">reviews: No review</p>
+                :
+                <p className="text-warning">reviews: {reviewAverage(arr).toFixed(1)}</p>
+              }
+
+                  <div>
+
+                    {user ?
+                    <form className="d-flex flex-column">
+                      <input type="number" min={1} max={5} ref={ratingRef}/>
+                      <textarea
+                        placeholder="Submit your review ..."
+                        cols="30"
+                        rows="10"
+                        className="w-100 form-control"
+                        ref={reviewRef}
+                      ></textarea>
+                      <div className="d-flex justify-content-end" id="a-c">
+                        <h3 className="text-danger">{reviewErr}</h3>
+                        <button className="button" onClick={reviewHandler}> Submit Review</button>
+                      </div>
+                    </form> 
+                    :
+                  <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
+                    <LoginModal name="single-product-like" />
+                  </i>
+                    }
+
+                    {/* yooooooooooooooooooooooooo */}
+
+                    <div id="d-g">
+                  {data.review.map((ev, i) => (
+                    <div key={i} id="d-f">
+                      <p>{ev.review}</p>
+                      <p>&nbsp; rating: {ev.rating}</p>
+                    </div>
+              ))} 
+</div>
+
+                  </div>
+          </section>
+
+          {/* SOME PRODUCT  */}
+          <section className="popular-wrapper py-5 home-wrapper-2">
+              {similar &&
+      <section className="container-fluid py-4 gray">
+       {/* {data && <h4 className="py-4">{data?.category}s</h4> } */}
+
+        <div className="product-card-body">
+          {similar?.map((ev) => (
+            <ProductCard
+              key={ev._id}
+              id={ev._id}
+              name={ev.name}
+              price={ev.price}
+              // description={ev.description}
+              images_title={ev.images.title}
+              images_others={ev.images.others}
+              color={ev.color}
+            />
+          ))}
+        </div>
+        <a href="/category?cat=dishwasher"><FaAngleDoubleRight size="40px"/> </a>
+      </section>
+    }
+</section>
+
+            </div>
+        </div>
+        </div>
+  );
+}
+
+export default SingleProduct;
+
+
+

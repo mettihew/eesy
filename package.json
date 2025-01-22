@@ -1,0 +1,64 @@
+{
+  "name": "eesy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.0",
+    "@mui/joy": "^5.0.0-beta.51",
+    "@mui/material": "^6.4.0",
+    "@toolpad/core": "^0.12.0",
+    "axios": "^1.7.9",
+    "cra-template": "1.2.0",
+    "formik": "^2.4.6",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.8",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
+    "react-medium-image-zoom": "^5.2.13",
+    "react-router-dom": "^7.1.3",
+    "react-scripts": "5.0.1",
+    "yup": "^1.6.1"
+  },
+  "scripts": {
+    "type": "module",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mettihew/eesy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mettihew/eesy/issues"
+  },
+  "homepage": "https://mettihew.github.io"
+}
