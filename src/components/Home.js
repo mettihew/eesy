@@ -12,7 +12,8 @@ import brand8 from '../images/brand-08.png'
 import axios from 'axios'
 import { FaAngleDoubleRight } from "react-icons/fa";
 import { URL } from "../utils/URL";
-import {services} from '../utils/Data'
+import HomeCategory from "./HomeCategory";
+// import {services} from '../utils/Data'
 
 
 function Home() {
@@ -31,14 +32,31 @@ function Home() {
     .then((res) => setMicrowave(res.data))
   }, []);
 
+
+
+
+const imgArr = [
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/0919cfcab0ec80c44cadc83f1a38fff786c8e984_1704710724.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/c931d276f2fa6289cd7e21505b2aba7869791ed7_1704710724.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/ea920120def61fee24a3f0015b36414fdec5ee2a_1729340056.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/b12d2c0e2b2babe7deed007008e84155c174dcf0_1704710724.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/6f58b223eea1ba3773fdfc085aed7067f8a69ad7_1704710724.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/845259c836d1b3e0e2d6e85eb639c4cfb410eafb_1704710724.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/62a7d22d16a41e8e1d8d82534ab81e073e669cd2_1704710726.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/5fdac9c602af6b7328866ed0aca8c95e08bfa100_1704710725.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/c035ead6d0be646ff4f6616befd3a39038cfd6ce_1704710725.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/d3f153a9a09bf3887ce291cdab6524c70e6e4933_1704710725.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/fdb7caf2b84485ba12f373038fa8ea6899da6e3f_1704710725.jpg?x-oss-process=image/format,webp",
+  "https://dkstatics-public.digikala.com/digikala-admin-landing/4f5b84d03907b416386735f990072d9937275730_1704710724.jpg?x-oss-process=image/format,webp",
+]
+
   return (
     <>
-      <section className="gray home">
-        {/* DIGI BANNER IMAGE */}
+      <section className="home">
         <img src={digi_banner} className="body-banner rounded-3 py-2 " alt="main banner" />
       </section>
 
-<div>
+<div id="around">
   <img src="https://www.digikala.com/statics/img/svg/footer/express-delivery.svg" />
   <img src="https://www.digikala.com/statics/img/svg/footer/cash-on-delivery.svg" />
   <img src="https://www.digikala.com/statics/img/svg/footer/support.svg" />
@@ -47,17 +65,29 @@ function Home() {
 </div>
 
 
+<div className='test' >
+
+<div className='body-box-small' >
+  <img src={imgArr[0]} />
+</div>
+
+<div className='body-box-small' >
+  <img src={imgArr[1]} />
+</div>
+
+<div className='body-box-small' >
+  <img src={imgArr[2]} />
+</div>
+
+<div className='body-box-small' >
+  <img src={imgArr[3]} />
+</div>
+</div>
 
 
-
-
-
-
-
-
-{/* ------------------------------------------------------ */}
-
-
+<HomeCategory images={imgArr.slice(0,4)}/>
+<HomeCategory images={imgArr.slice(4,8)}/>
+<HomeCategory images={imgArr.slice(8,12)}/>
 
 
 <section className="gray container-fluid overflow-scroll" >
@@ -94,8 +124,6 @@ function Home() {
           
           </div>
           </section>
-
-
 
 
 
@@ -147,12 +175,7 @@ function Home() {
 
 
 
-
-
-
-
-
-<div className="round-img overflow-hidden" >
+<div className="round-img overflow-scroll" >
         <img src="https://dkstatics-public.digikala.com/digikala-admin-landing/0919cfcab0ec80c44cadc83f1a38fff786c8e984_1704710724.jpg?x-oss-process=image/format,webp" />
         <img src="https://dkstatics-public.digikala.com/digikala-admin-landing/c931d276f2fa6289cd7e21505b2aba7869791ed7_1704710724.jpg?x-oss-process=image/format,webp" />
         <img src="https://dkstatics-public.digikala.com/digikala-admin-landing/ea920120def61fee24a3f0015b36414fdec5ee2a_1729340056.jpg?x-oss-process=image/format,webp" />
