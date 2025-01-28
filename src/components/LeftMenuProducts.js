@@ -87,11 +87,10 @@ const selectHandler = (ev) => {
         <option value="createdAt">recent </option>
     </select>
 
+
+
             <RangeSlider min={urlMinPrice} max={urlMaxPrice} goP={(ev) => goHandler2(ev)}  />
-            {/* <h6>Enter your desire price</h6>
-<input type="number" placeholder={(minPrice) ? minPrice : "Min Price"} onChange={ev => setMinPrice(ev.target.value)} />
-<input type="number" placeholder={(maxPrice) ? maxPrice : "Max Price"} onChange={ev => setMaxPrice(ev.target.value)} />
-<button onClick={() => goHandler()}>GO</button> */}
+
 
 
              <h6>Category</h6>

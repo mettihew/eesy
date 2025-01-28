@@ -56,10 +56,10 @@ function Search() {
 }
 
 
-{data?.search.length !== 0 &&
+{data?.search.length > 1 &&
   <>
   <div className="hide-filter">
-        {filter ? 
+        { filter ?
         <div className="left">
         <button onClick={() => setFilter(false)}>close</button>
           <LeftMenuProducts data={data?.search} onBrand={(ev) => brandHandler(ev)} />
@@ -116,8 +116,13 @@ function Search() {
 </div>
 
         {data?.search?.length === 0 && <div id="center"> <h2>No result found</h2> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwZBISiHxiUPWBHNJZBGjWkz_9B1VyYnAEFg&s" width={"100px"} alt="loading" /> </div> }
+</div>
 
-    </div>
+{console.log(data)
+}
+{data.number <= data.limit ? 
+<p>End of the results, {data?.number} products</p>
+:
     <div id="d-f">
       {data?.page > 1 && <p className="products-count px-5" onClick={pageHandler} value={data?.page - 1}>Previous</p> }
       {data?.page > 1 && <p className="products-count" onClick={pageHandler} value={data?.page - 1}>{data?.page - 1}</p> }
@@ -126,6 +131,8 @@ function Search() {
       {(data?.limit + data?.limit) * data?.page < data?.number && <p className="products-count" onClick={pageHandler} value={data?.page + 2}>{data?.page + 2}</p> }
       {data?.limit * data?.page < data?.number && <p className="products-count px-4" onClick={pageHandler} value={data?.page + 1}>Next</p> }
     </div>
+}
+
 
     </div>
   );

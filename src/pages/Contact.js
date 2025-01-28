@@ -4,15 +4,49 @@ import emailjs from "@emailjs/browser"
 import React, { useRef } from 'react';
 
 function Contact() {
-  // const sendEmail = (ev) => {
-  //   // emailjs.sendForm(process.env.EMAILJS_SERVICE, process.env.EMAILJS_TEMPLATE, ev.target, process.env.EMAILJS_PUBLIC_KEY)
-  //   ev.preventDefault()
-  //   emailjs.sendForm('service_vpf116g', 'template_qbr56qp', ev.target, 'bmvn_iGiB1jhPbSJT')
-  //   .then((res) => console.log('success', res))
-  //   .catch((err) => console.log('err', err))
-  // }
-  const form = useRef();
 
+
+
+
+console.log('asdfasdfasasdfdfaasdfsdfasd');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  console.log(process.env.REACT_APP_SERVICE, process.env.REACT_APP_TEMPLATE, process.env.REACT_APP_PUBLIC)
+
+    const form = useRef();
   const sendEmail = (e) => {
     e.preventDefault();
 
@@ -90,7 +124,6 @@ function Contact() {
       <label>Message</label>
       <textarea name="message" className="form-control"/>
       <div>
-      {/* <button type="submit" className="btn-theme">Send</button> */}
       <input type="submit" value="Send" className="btn-theme"/>
       </div>
     </form> 

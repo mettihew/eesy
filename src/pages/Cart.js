@@ -121,47 +121,40 @@ function Cart() {
     }
 
 
-      {history && (
-           <section className="container-fluid py-4 gray">
-          <h4>History</h4>
-        <div className="product-card-body">
-          {history?.map((ev) => (
-            <ProductCard
-              key={ev._id}
-              id={ev._id}
-              name={ev.name}
-              price={ev.price}
-              images_title={ev.images.title}
-              images_others={ev.images.others}
-              color={ev.color}
-            />
-          ))}
-        </div>
-      </section>
 
-      )}
-
-
+{/* SIMILAR PRODUCT  */}
 {similar &&
-      <section className="container-fluid py-4 gray">
-        <h4>Suggestions</h4> 
-        <div className="product-card-body">
-          {similar?.map((ev) => (
-            <ProductCard
-              key={ev._id}
-              id={ev._id}
-              name={ev.name}
-              price={ev.price}
-              // description={ev.description}
-              images_title={ev.images.title}
-              images_others={ev.images.others}
-              color={ev.color}
-            />
-          ))}
+<div className="py-4">
+    <h3>Similar</h3>
+    <div className="home111">
+      {similar?.map((ev) => (
+        <div key={ev._id} className="p-c2">
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
+        <h5>{ev.name}</h5>
         </div>
-        <a href="/category?cat=dishwasher"><FaAngleDoubleRight size="40px"/> </a>
-      </section>
-    }
+      ))}
+    </div>
+</div>
+}
+
+
+{/* SIMILAR PRODUCT  */}
+{history &&
+<div className="py-4">
+    <h3>history</h3>
+    <div className="home111">
+      {history?.map((ev) => (
+        <div key={ev._id} className="p-c2">
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
+        <h5>{ev.name}</h5>
+        </div>
+      ))}
+    </div>
+</div>
+}
+
+
+
 
 
     </div>

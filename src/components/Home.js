@@ -150,7 +150,7 @@ const imgArr = [
     <div className="home111">
       {refrigerator?.map((ev) => (
         <div key={ev._id} className="p-c2">
-        <a href={`/product/${ev.id}`}><img src={ev.images.title} alt="title" /></a>
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
         <h5>{ev.name}</h5>
         </div>
       ))}
@@ -164,7 +164,7 @@ const imgArr = [
     <div className="home111">
       {dishwasher?.map((ev) => (
         <div key={ev._id} className="p-c2">
-        <a href={`/product/${ev.id}`}><img src={ev.images.title} alt="title" /></a>
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
         <h5>{ev.name}</h5>
         </div>
       ))}
@@ -178,7 +178,7 @@ const imgArr = [
     <div className="home111">
       {microwave?.map((ev) => (
         <div key={ev._id} className="p-c2">
-        <a href={`/product/${ev.id}`}><img src={ev.images.title} alt="title" /></a>
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
         <h5>{ev.name}</h5>
         </div>
       ))}

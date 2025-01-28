@@ -26,8 +26,10 @@ function SingleProduct() {
   const [loadingFav, setLoadingFav] = useState(false)
   const [loadingCom, setLoadingCom] = useState(false)
   const [reviewErr, setReviewErr] = useState(false)
+  const [report, setReport] = useState(false)
   const reviewRef = useRef()
   const ratingRef = useRef()
+  const reportRef = useRef()
 
   const [data, setData] = useState(null)
   const user = JSON.parse(localStorage.getItem('user'))
@@ -150,12 +152,23 @@ function SingleProduct() {
   let com = user?.compare?.find(ev => {
     return ev === pId
       })
+
+      const reportHandler = (ev) => {
+        ev.preventDefault()
+        const issue = reportRef.current.value
+        if(!issue) return alert("to send an issue, text required")
+        axios.post(`${URL}/report`, {pId, issue })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log('fail'))
+      }
       
   return (
-    <div className="single-product container" >
+    // A SIMPLE DIV TO WRITE THE CODES IN IT 
+    <div className="container-fluid" >
 
-      {/* DON'T DELETE BELOW DIV, IT REALLY IMPORTANT FOR THE PAGE'S RESPONSIVNESS, ZOOM IN AND OUT TO SEE THE RESULT */}
-<div className="I-AM-VERY-IMPORTANT">
+    {/*  MAIN DIV - ALL SECTIONS - KEEPYING SECTION AFTER SECTION - LINE BY LINE - GRID */}
+    <div className="single-main">
+
 
         {/* WHERE AM I? */}
         <div className="whereAmI py-4">
@@ -167,155 +180,150 @@ function SingleProduct() {
           <FaAngleRight color="gray" size="12px" />
         </div>
 
-        {/* MAIN ----------------------------------------------------------------------------------------------------------- */}
-        <div className="single-first-line">
-          {/* 3 - images */}
-          <div className="single-product-images">
-              <Zoom><img alt="title" src={data.images.title} width={"340px"} /></Zoom>
-            <div className="single-product-images-others-div">
+
+       {/* LINE ONE - THIS IS THE BIGGEST DIV AFTER MAIN DIV IN THIS PAGE - INCLUDING ALL IMAGES, PRODUCT NAME AND DETAILS, USER LOGIN AND ADD TO CART  */}
+        <div className="single">
+
+          {/* --------------------------------------------------------HERE WE HAVE TWO PARTS - PART1: IMAGES IN THE LEFT - PART2: PRODUCT DETAILS AND ADD TO CART IN THE RIGHT  */}
+          {/*------------ PART1 OF LINE1 - SMALL AND BIG IMAGES */}
+          <div className="single-images" >
+              {/* <Zoom><img alt="title" src={data.images.title} width={"340px"} /></Zoom> */}
+              <Zoom><img alt="title" src={data.images.title} width={"300px"} /></Zoom>
+            <div>
               {data.images.others.map((ev, i) => (
-                 <Zoom key={i}><img alt="others"src={ev} className="others"/></Zoom> 
+                 <Zoom key={i}><img alt="others" src={ev} className="others-img"/></Zoom> 
               ))} 
             </div>
           </div>
-          {/* } */}
-
-          <div className="single-product-login-and-all-the-information">
-
-            {/* 2 - ALL THE INFORMATION AND DETAILS ABOUT THE PRODUCT THAT YOU CAN SEE */}
-            <div id="col">
-
-              <h4 className="name-width">{data.name}</h4>
-              {data.en_name && <p className="name-width">{data.en_name}</p>}
-
-              <div className="blue">
-                <p> برند  : {data.brand} </p>
-
-                <div id="a-c">
-                  <p style={{ color: 'yellow', marginRight: '5px' }}></p>
-                </div>
-                {/* <p> - {rate.length} نظر دهی</p> */}
-
-                <p className="line" >
-                  | 32 answered questions
-                </p>
-              </div>
-
-              <div id="d-f" className="gap-10">
-                <p>Price :</p>
-                <h5 className="text-danger">${data.price}</h5>
-              </div>
-
-              <p>Color :</p>
-
-              {colorDiv && <div className="d-flex my-2 gap-10"> 
-                <p className="py-1">Selected color:</p>
-                <div className="color-global " style={{ backgroundColor: colorDiv }} />
-                <p className="py-1">{colorDiv}</p>
-              </div>}
-
-<div id="d-f" className="gap-30">
-               {data.color.map((ev, i) => (
-                <div key={i}>
-                  <div onClick={() => setColorDiv(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
-                  <p>{ev}</p>
-                </div>
-              ))} 
-</div>
 
 
-              <p className="blue">Size Chart</p>
-              {/* <p>. 100% Cotton</p> */}
-              {/* <p>. Imported</p> */}
-              {/* <p>. Lace Up closure</p> */}
-              {/* <p>. Machine Wash</p> */}
-              {/* <p>{data[0]?.description}</p> */}
-              <p>{data.feauture}</p>
+          {/* ------------- PART2 OF LINE1 - PRODUCT DETAILS AND ADD TO CART(OR LOGIN) */}
+          {/* <div id="d-f" style={{width:''}}> */}
+
+          <div id="d-g" style={{maxWidth:'600px'}}>
+
+            <h4 >{data.name}</h4>
+
+            <div className="blue">
+              <p> Brand  : {data.brand} </p>
+
+              <p className="line" >
+                | 32 answered questions
+              </p>
+            </div>
+
+            <div id="d-f" className="gap-10">
+              <p>Price :</p>
+              <h5 className="text-danger">${data.price}</h5>
+            </div>
+
+            <p>Color :</p>
+
+            {colorDiv && <div className="d-flex my-2 gap-10"> 
+              <p className="py-1">Selected color:</p>
+              <div className="color-global " style={{ backgroundColor: colorDiv }} />
+              <p className="py-1">{colorDiv}</p>
+            </div>}
+
+            <div id="d-f" className="gap-30">
+                          {data.color.map((ev, i) => (
+                          <div key={i}>
+                            <div onClick={() => setColorDiv(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
+                            <p>{ev}</p>
+                          </div>
+                        ))} 
             </div>
 
 
-            {/* 1 - LOGIN  */}
-
-
-<div>
-{user ?
-  <>
-<div>
-          {(!colorDiv) && !colorErr && <p>Select color to order</p>}
-          {colorErr && !colorDiv && <p className="text-danger">Select color first</p>}
-          {(colorDiv) && <p className="text-success">You are ready to Order</p>}
-          {inCart ? 
-          <div id="j-c">
-<ButtonGroup>
-    <Button aria-label="reduce" onClick={() =>  removeHandler() }><RemoveIcon fontSize="small" /></Button>
-    {loadingAdd ? <h1>...</h1> : <h1>{inCart.qty}</h1>}
-    <Button aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
-</ButtonGroup>
-</div>
-    : 
-        <button className="add-to-cart-button" type="submit" onClick={addHandler}>Add to Your Cart</button>
-  }
-</div>
-
-    {loadingFav ? 
-        <h1>...</h1>
-        :
-        <>
-          {fav ?
-          // YOU HAVE THE PRODUCT
-            <div className="single-product-add-to-cart-button d-flex" id="j-c">
-              <p className="blue" style={{ fontSize: 'small' }}> In your favorite list </p> &nbsp;
-              <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleFavorite}> / delete &nbsp;</p>
-
-                <button className="add-to-list-button"> 
-                <FaHeart color="red" /> 
-                </button> 
-            </div>
-            :
-          // DO NOT HAVE THE PRODUCT
-              <div className="single-product-add-to-cart-button" id="ac">
-              {/* <p style={{ color: 'blue', fontSize:'small'}}>افزودن به لیست من</p> */}
-            <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite<FaHeart color="black" /></button>
-              </div>
-          }
-        </>
-    }
-
-    {loadingCom ? 
-        <h1>...</h1>
-        :
-        <>
-          {com ?
-          // YOU HAVE THE PRODUCT
-            <div className="single-product-add-to-cart-button d-flex">
-              <a href="compare-product" className="blue" style={{ fontSize: 'small' }}>Go To Compare</a> &nbsp;
-              <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleCompare}> / حذف</p>
-                <button className="add-to-list-button"> 
-                <FaCodeCompare color="red" /> 
-                </button> 
-            </div>
-            :
-          // DO NOT HAVE THE PRODUCT
-              <div className="single-product-add-to-cart-button" id="ac">
-              {/* <p style={{ color: 'blue', fontSize:'small'}}>Add to Compare Product</p> */}
-            <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
-            </div>
-          }
-        </>
-    }
-  </>
-:
-    // LOGIN - NOT ADD 
-    <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
-      <LoginModal name="single-product-like" />
-    </i>
-}
-</div>
-
-
-
-            </div>
+            <p className="blue">Size Chart</p>
+            {/* <p>. 100% Cotton</p> */}
+            {/* <p>. Imported</p> */}
+            {/* <p>. Lace Up closure</p> */}
+            {/* <p>. Machine Wash</p> */}
+            {/* <p>{data[0]?.description}</p> */}
+            <p>{data.feauture}</p>
           </div>
+
+          {/* 1 - LOGIN  */}
+          <div>
+          {user ?
+            <>
+          <div>
+                    {(!colorDiv) && !colorErr && <p>Select color to order</p>}
+                    {colorErr && !colorDiv && <p className="text-danger">Select color first</p>}
+                    {(colorDiv) && <p className="text-success">You are ready to Order</p>}
+                    {inCart ? 
+                    <div id="j-c">
+          <ButtonGroup>
+              <Button aria-label="reduce" onClick={() =>  removeHandler() }><RemoveIcon fontSize="small" /></Button>
+              {loadingAdd ? <h1>...</h1> : <h1>{inCart.qty}</h1>}
+              <Button aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
+          </ButtonGroup>
+          </div>
+              : 
+                  <button className="add-to-cart-button" type="submit" onClick={addHandler}>Add to Your Cart</button>
+            }
+          </div>
+
+              {loadingFav ? 
+                  <h1>...</h1>
+                  :
+                  <>
+                    {fav ?
+                    // YOU HAVE THE PRODUCT
+                      <div className="single-product-add-to-cart-button d-flex" id="j-c">
+                        <p className="blue" style={{ fontSize: 'small' }}> In your favorite list </p> &nbsp;
+                        <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleFavorite}> / delete &nbsp;</p>
+
+                          <button className="add-to-list-button"> 
+                          <FaHeart color="red" /> 
+                          </button> 
+                      </div>
+                      :
+                    // DO NOT HAVE THE PRODUCT
+                        <div className="single-product-add-to-cart-button" id="ac">
+                        {/* <p style={{ color: 'blue', fontSize:'small'}}>افزودن به لیست من</p> */}
+                      <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite<FaHeart color="black" /></button>
+                        </div>
+                    }
+                  </>
+              }
+
+              {loadingCom ? 
+                  <h1>...</h1>
+                  :
+                  <>
+                    {com ?
+                    // YOU HAVE THE PRODUCT
+                      <div className="single-product-add-to-cart-button d-flex">
+                        <a href="compare-product" className="blue" style={{ fontSize: 'small' }}>Go To Compare</a> &nbsp;
+                        <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleCompare}> / حذف</p>
+                          <button className="add-to-list-button"> 
+                          <FaCodeCompare color="red" /> 
+                          </button> 
+                      </div>
+                      :
+                    // DO NOT HAVE THE PRODUCT
+                        <div className="single-product-add-to-cart-button" id="ac">
+                        {/* <p style={{ color: 'blue', fontSize:'small'}}>Add to Compare Product</p> */}
+                      <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
+                      </div>
+                    }
+                  </>
+              }
+            </>
+          :
+              // LOGIN - NOT ADD 
+              <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
+                <LoginModal name="single-product-like" />
+              </i>
+          }
+          </div>
+
+          {/* </div> */}
+
+
+      </div>
 
 
         {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
@@ -325,16 +333,16 @@ function SingleProduct() {
         </div>
 
 {showMore &&
-          <div id='d-g' className="single-product-text-align p-5">
-            <div style={{ padding: "30px 0" }} className="line" />
+          <div id='d-g' className="single-product-text-align px-5">
+            {/* <div style={{ padding: "30px 0" }} className="line" /> */}
 
-            <h5 style={{ marginTop: '50px' }}>weight</h5>
+            <h5 style={{ marginTop: '10px' }}>weight</h5>
             <p className="p-3" style={{ marginRight: '170px' }}>{data.weight} weight</p>
 
-            <h5 style={{ marginTop: '50px' }}>height</h5>
+            <h5 style={{ marginTop: '10px' }}>height</h5>
             <p className="p-3" style={{ marginRight: '170px' }}>{data.height} height</p>
 
-            <h5 style={{ marginTop: '50px' }}>depth</h5>
+            <h5 style={{ marginTop: '10px' }}>depth</h5>
             <p className="p-3" style={{ marginRight: '170px' }}>{data.depth} depth </p>
           </div>
 }
@@ -358,10 +366,25 @@ function SingleProduct() {
 
           <div style={{ padding: "30px 0" }} className="line" >
             <h4>Report issue</h4>
-            <div className="d-flex">
-              <p>Click here to report a problem with this product</p>
-              <p className="text-info" id="c-p">, کلیک کنید .</p>
+            {!report &&
+            <div id="between"> 
+              <p>Report a problem with this product</p>
+              <p className="text-info" id="c-p" onClick={() => setReport(true)}>Click Here</p>
             </div>
+            }
+
+
+{report &&
+            <div>
+              <p className="text-info" id="c-p" onClick={() => setReport(false)}>Close</p>
+              <form onSubmit={reportHandler}>
+              <textarea ref={reportRef} style={{width: '100%'}} />
+              <button className="button" >Send</button>
+              </form>
+            </div>
+}
+
+
           </div>
           <div className="d-flex" style={{ marginTop: "40px" }}>
 
@@ -389,15 +412,11 @@ function SingleProduct() {
             </div>
           </div>
 
-          {/* DESCRIPTION */}
-          <section className="py-5 gray">
-                <h3>توضیحات</h3>
-                  <p>A really good something</p>
-          </section>
+      
 
           {/* REVIEW */}
 
-          <section className="col-12" id="review" >
+          <section className="py-4" id="review" >
 
                 <div id="between">
                   <h3>Reviews</h3>
@@ -448,34 +467,25 @@ function SingleProduct() {
                   </div>
           </section>
 
-          {/* SOME PRODUCT  */}
-          <section className="popular-wrapper py-5 home-wrapper-2">
-              {similar &&
-      <section className="container-fluid py-4 gray">
-       {/* {data && <h4 className="py-4">{data?.category}s</h4> } */}
-
-        <div className="product-card-body">
-          {similar?.map((ev) => (
-            <ProductCard
-              key={ev._id}
-              id={ev._id}
-              name={ev.name}
-              price={ev.price}
-              // description={ev.description}
-              images_title={ev.images.title}
-              images_others={ev.images.others}
-              color={ev.color}
-            />
-          ))}
+          {/* SIMILAR PRODUCT  */}
+{similar &&
+<div className="py-4">
+    <h3>Similar</h3>
+    <div className="home111">
+      {similar?.map((ev) => (
+        <div key={ev._id} className="p-c2">
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
+        <h5>{ev.name}</h5>
         </div>
-        <a href="/category?cat=dishwasher"><FaAngleDoubleRight size="40px"/> </a>
-      </section>
-    }
-</section>
+      ))}
+    </div>
+</div>
+}
 
             </div>
         </div>
-        </div>
+</div>
+
   );
 }
 
