@@ -8,6 +8,7 @@ function Products() {
   useEffect(() => {
     const search = window.location.search;
     let cat = search.split("cat=")[1];
+    
 
     if(cat){
       axios.post(`${URL}/category`, {cat})

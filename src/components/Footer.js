@@ -29,40 +29,39 @@ const emailHandler = (ev) => {
           </div>
            {/* Stay in contac + EMAIL  */}
            <div id="d-f" className="py-3">
-            <input className="form-control" placeholder="Stay in contact" />
+            {/* <input className="form-control" placeholder="Stay in contact" />
             <Button variant="contained" size="small" color="info" onClick={(ev) => emailHandler(ev)}>
               Email <BsSend  />
-            </Button>
+            </Button> */}
         </div>
         </div>
 
         <div className="footer-links">
           <h4>Information</h4>
-          <p> Returned Policy </p>
-          <p> Privacy Policy </p>
-          <p> Shipping Policy </p>
-          <p> Terms & Conditions </p>
-          <p> Blogs </p>
+          <a href="/contact"> Returned Policy </a>
+          <a href="/contact"> Privacy Policy </a>
+          <a href="/contact"> Shipping Policy </a>
+          <a href="/contact"> Terms & Conditions </a>
+          {/* <a href="/contact"> Blogs </a> */}
         </div>
 
         <div className="footer-links">
           <h4>Account</h4>
-          <p>About Us</p>
-          <p>Faq</p>
-          <p>Contact</p>
-          <p>Call</p>
+          <a href="/contact">About Us</a>
+          <a href="/contact">Contact</a>
+          <a href="/contact">Call</a>
         </div>
 
         <div className="footer-links">
           <h4>Quick Links</h4>
-          <p> Laptops </p>
-          <p> Headphones </p>
-          <p> Tablets </p>
-          <p> Watch </p>
+          <a href="/compare-product"> Compare Products </a>
+          <a href="/favorite"> Favorite List </a>
+          <a href="/login"> Sign In </a>
+          <a href="/cart"> Cart </a>
         </div>
 
-{/* container TAKES IT TO THE BOTTOM LINE */}
-        <p className="container text-center"> &copy; {new Date().getFullYear()}; Powered by Mettihew </p>
+        {/* DON'T DELETE container!!! */}
+        <p className="container text-center" style={{marginBottom:'0px'}}> &copy; 2019 - {new Date().getFullYear()}; Powered by Mettihew </p>
 
       </footer>
 

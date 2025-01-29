@@ -278,15 +278,18 @@ function Header(props) {
     </div>
 
 
-    <div className="header-short">
+    <div className="header-short container-fluid">
     <div className="short-line1">
       <a href="/" id="no-a"> <h3 style={{color:'black'}}> eesy </h3> </a>
 
-      <a href="/account" id="no-a">
+<div id="a-c">
+
+      <a href="/account" id="no-a" style={{marginRight:'15px'}}>
       <FaRegUser size={'20px'} cursor={'pointer'}/>
       </a>
 
-      <div style={{marginTop:'-4px'}}>
+      {/* <div style={{marginTop:'-4px'}}> */}
+      <div>
       <a href="/cart">
       {data.length > 0 &&  <p className="cart-short">{data.length}</p> }
       <BsCart3 size={'23px'} color="black" cursor={'pointer'}/>
@@ -301,6 +304,8 @@ function Header(props) {
       }} /> */}
         <Drawer onColor="black"/>
     </div>
+
+</div>
 
 
     <div id="a-c" style={{ border: searchModal ? "2px solid orange" : ""}} className= "search-div-width" >
@@ -318,7 +323,7 @@ function Header(props) {
   <button style={{ backgroundColor: type ? "lightGreen" : "orange", width: "40px", border: "0", outline: "0", borderRadius: "0 5px 5px 0", }} > <BsSearch /> </button>
 </form>
 
-<div className={searchModal ? "searchModal" : "searchModalHidden"}>
+<div className={searchModal ? "searchModal-short" : "searchModalHidden"}>
 
   <div id="around">
     {searchMap}

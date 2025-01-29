@@ -36,9 +36,9 @@ export default function DrawerBasic(props) {
         >
           <Divider />
           <List sx={{direction: 'ltr'}}>
-            {['products', 'cart', 'test', 'compare-product', 'favorite', 'login', 'admin-issues'].map((text) => (
+            {['products', 'contact', 'categories', 'cart', 'test', 'compare-product', 'favorite', 'login', 'admin-issues'].map((text) => (
               <ListItem key={text}>
-                <a href={`/${text}`} id='no-a'><h1>{text}</h1></a>
+                <a href={`/${text}`} id='no-a'><h2>{text}</h2></a>
               </ListItem>
             ))}
           </List>

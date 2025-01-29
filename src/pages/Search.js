@@ -44,8 +44,10 @@ function Search() {
     <FaAngleRight color="gray" size="12px" />
     <a href={`/products`} >Products</a>
     <FaAngleRight color="gray" size="12px" />
-    <a href={`/category?cat=${data.category}`} >{data.category}</a>
+    {data.category && <>
+    <a href={`/category?cat=${data.category}`}>{data.category}</a>
     <FaAngleRight color="gray" size="12px" />
+    </>}
   </div>
 
     {/* Number of results */}
@@ -118,8 +120,7 @@ function Search() {
         {data?.search?.length === 0 && <div id="center"> <h2>No result found</h2> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwZBISiHxiUPWBHNJZBGjWkz_9B1VyYnAEFg&s" width={"100px"} alt="loading" /> </div> }
 </div>
 
-{console.log(data)
-}
+
 {data.number <= data.limit ? 
 <p>End of the results, {data?.number} products</p>
 :

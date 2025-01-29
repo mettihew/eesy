@@ -6,14 +6,15 @@ import { useLocation } from "react-router";
 import { FaAngleRight, FaAngleUp, FaHeart } from 'react-icons/fa'
 import { FaCodeCompare } from "react-icons/fa6";
 import LoginModal from '../components/LoginModal'
-import ProductCard from "../components/ProductCard";
+// import ProductCard from "../components/ProductCard";
 import axios from "axios";
 import { URL } from "../utils/URL";
-import { FaAngleDoubleRight } from "react-icons/fa";
+// import { FaAngleDoubleRight } from "react-icons/fa";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { Similar } from "../components/Similars";
 
 function SingleProduct() {
   const [colorDiv, setColorDiv] = useState()
@@ -21,7 +22,7 @@ function SingleProduct() {
   const [colorErr, setColorErr] = useState(false)
   const location = useLocation()
   const pId = location.pathname.split("/")[2]
-  const [similar, setSimilar] = useState()
+  // const [similar, setSimilar] = useState()
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingFav, setLoadingFav] = useState(false)
   const [loadingCom, setLoadingCom] = useState(false)
@@ -51,18 +52,19 @@ function SingleProduct() {
       setInCart(cart)
 
     // MAKING HISTORY
-    axios.post(`${URL}/add-history`, {pId, uId: user._id})
-    .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
+    // axios.post(`${URL}/add-history`, {pId, uId: user._id})
+    // .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
   }
 
   
 }
 
     //similar products
-    if(data){
-       axios.post(`${URL}/home-cat`, {category: data.category})
-      .then((res) => setSimilar(res.data))
-    }
+    // if(data){
+      //  axios.post(`${URL}/home-cat`, {category: data.category})
+      // .then((res) => setSimilar(res.data))
+    // }
+  // }, [data]) // "data" is important for getting suggestions
   }, [data]) // "data" is important for getting suggestions
 
   if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>
@@ -453,8 +455,6 @@ function SingleProduct() {
                   </i>
                     }
 
-                    {/* yooooooooooooooooooooooooo */}
-
                     <div id="d-g">
                   {data.review.map((ev, i) => (
                     <div key={i} id="d-f">
@@ -467,20 +467,8 @@ function SingleProduct() {
                   </div>
           </section>
 
-          {/* SIMILAR PRODUCT  */}
-{similar &&
-<div className="py-4">
-    <h3>Similar</h3>
-    <div className="home111">
-      {similar?.map((ev) => (
-        <div key={ev._id} className="p-c2">
-        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
-        <h5>{ev.name}</h5>
-        </div>
-      ))}
-    </div>
-</div>
-}
+    {/* SIMILAR PRODUCT  */}
+    <Similar data={data} />
 
             </div>
         </div>

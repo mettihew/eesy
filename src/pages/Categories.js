@@ -1,11 +1,9 @@
 import back2 from "../images/back2.jpg"
-import soon2 from '../images/soon2.webp'
-
 
 function Categories() {
 
   return (
-    <div >
+    <div>
 
       <img src={back2} width="100%" alt='background' draggable={false} />
 

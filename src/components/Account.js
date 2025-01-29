@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import axios from 'axios'
-import {URL} from '../utils/URL'
+// import { useState, useEffect } from "react";
+// import axios from 'axios'
+// import {URL} from '../utils/URL'
 import { LuLayoutDashboard } from "react-icons/lu";
+import {History} from './Similars'
 
 
 export default function Account(){
-    const [history, setHistory] = useState();
+    // const [history, setHistory] = useState();
      const user = JSON.parse(localStorage.getItem('user'))
   
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
+  // useEffect(() => {
+    // const user = JSON.parse(localStorage.getItem('user'))
 
     // HISTORY
-    axios
-      .post(`${URL}/get-history`, { history: user.history })
-      .then((res) => setHistory(res.data));
+    // axios
+      // .post(`${URL}/get-history`, { history: user.history })
+      // .then((res) => setHistory(res.data));
 
-  }, []);
+  // }, []);
 
   if(!user) return window.location.href = "/login"
 
@@ -52,20 +52,7 @@ export default function Account(){
 
 
       
-
-{history &&
-<div className="py-4">
-  <div id="between" ><h3 className="py-4">Your history</h3><a href="" style={{color:'black', marginTop:'-10px'}}>See all </a></div>
-    <div className="home111">
-      {history?.map((ev) => (
-        <div key={ev._id} className="p-c2">
-        <a href={`/product/${ev.id}`}><img src={ev.images.title} alt="title" /></a>
-        <h5>{ev.name}</h5>
-        </div>
-      ))}
-    </div>
-</div>
-}
+<History user={user}/>
 
           
     </div>
