@@ -4,7 +4,7 @@ import 'react-medium-image-zoom/dist/styles.css'
 import { useLocation } from "react-router";
 
 import { FaAngleRight, FaAngleUp, FaHeart } from 'react-icons/fa'
-import { FaCodeCompare } from "react-icons/fa6";
+import { FaCartShopping, FaCodeCompare } from "react-icons/fa6";
 import LoginModal from '../components/LoginModal'
 // import ProductCard from "../components/ProductCard";
 import axios from "axios";
@@ -52,19 +52,10 @@ function SingleProduct() {
       setInCart(cart)
 
     // MAKING HISTORY
-    // axios.post(`${URL}/add-history`, {pId, uId: user._id})
-    // .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
+    axios.post(`${URL}/add-history`, {pId, uId: user._id})
+    .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
   }
-
-  
 }
-
-    //similar products
-    // if(data){
-      //  axios.post(`${URL}/home-cat`, {category: data.category})
-      // .then((res) => setSimilar(res.data))
-    // }
-  // }, [data]) // "data" is important for getting suggestions
   }, [data]) // "data" is important for getting suggestions
 
   if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>
@@ -166,7 +157,7 @@ function SingleProduct() {
       
   return (
     // A SIMPLE DIV TO WRITE THE CODES IN IT 
-    <div className="container-fluid" >
+    <div >
 
     {/*  MAIN DIV - ALL SECTIONS - KEEPYING SECTION AFTER SECTION - LINE BY LINE - GRID */}
     <div className="single-main">
@@ -189,8 +180,7 @@ function SingleProduct() {
           {/* --------------------------------------------------------HERE WE HAVE TWO PARTS - PART1: IMAGES IN THE LEFT - PART2: PRODUCT DETAILS AND ADD TO CART IN THE RIGHT  */}
           {/*------------ PART1 OF LINE1 - SMALL AND BIG IMAGES */}
           <div className="single-images" >
-              {/* <Zoom><img alt="title" src={data.images.title} width={"340px"} /></Zoom> */}
-              <Zoom><img alt="title" src={data.images.title} width={"300px"} /></Zoom>
+              <Zoom><img alt="title" src={data.images.title} className="title-img" /></Zoom>
             <div>
               {data.images.others.map((ev, i) => (
                  <Zoom key={i}><img alt="others" src={ev} className="others-img"/></Zoom> 
@@ -200,11 +190,10 @@ function SingleProduct() {
 
 
           {/* ------------- PART2 OF LINE1 - PRODUCT DETAILS AND ADD TO CART(OR LOGIN) */}
-          {/* <div id="d-f" style={{width:''}}> */}
 
           <div id="d-g" style={{maxWidth:'600px'}}>
 
-            <h4 >{data.name}</h4>
+            <h4 className="line1-name">{data.name}</h4>
 
             <div className="blue">
               <p> Brand  : {data.brand} </p>
@@ -263,7 +252,7 @@ function SingleProduct() {
           </ButtonGroup>
           </div>
               : 
-                  <button className="add-to-cart-button" type="submit" onClick={addHandler}>Add to Your Cart</button>
+                  <button className="btn" type="submit" onClick={addHandler}>Add to Your Cart  <FaCartShopping /> </button>
             }
           </div>
 
@@ -274,18 +263,16 @@ function SingleProduct() {
                     {fav ?
                     // YOU HAVE THE PRODUCT
                       <div className="single-product-add-to-cart-button d-flex" id="j-c">
-                        <p className="blue" style={{ fontSize: 'small' }}> In your favorite list </p> &nbsp;
+                        <a href="/favorite" className="blue" style={{ fontSize: 'small' }}> Go to favorite list </a> &nbsp;
                         <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleFavorite}> / delete &nbsp;</p>
 
-                          <button className="add-to-list-button"> 
                           <FaHeart color="red" /> 
-                          </button> 
                       </div>
                       :
                     // DO NOT HAVE THE PRODUCT
                         <div className="single-product-add-to-cart-button" id="ac">
                         {/* <p style={{ color: 'blue', fontSize:'small'}}>افزودن به لیست من</p> */}
-                      <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite<FaHeart color="black" /></button>
+                      <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite <FaHeart color="black" /></button>
                         </div>
                     }
                   </>
@@ -300,7 +287,7 @@ function SingleProduct() {
                       <div className="single-product-add-to-cart-button d-flex">
                         <a href="compare-product" className="blue" style={{ fontSize: 'small' }}>Go To Compare</a> &nbsp;
                         <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleCompare}> / حذف</p>
-                          <button className="add-to-list-button"> 
+                          <button className="btn"> 
                           <FaCodeCompare color="red" /> 
                           </button> 
                       </div>
@@ -308,7 +295,7 @@ function SingleProduct() {
                     // DO NOT HAVE THE PRODUCT
                         <div className="single-product-add-to-cart-button" id="ac">
                         {/* <p style={{ color: 'blue', fontSize:'small'}}>Add to Compare Product</p> */}
-                      <button className="add-to-list-button" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
+                      <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
                       </div>
                     }
                   </>
@@ -329,9 +316,11 @@ function SingleProduct() {
 
 
         {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
+
         {/* here outside of the main - this is the next line - hidden stuff (shoe more) */}
+
         <div>
-          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue single-product-show-more" onClick={() => setShowMore(true)}>See more detail</p>}
+          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
         </div>
 
 {showMore &&
@@ -349,11 +338,10 @@ function SingleProduct() {
           </div>
 }
 
-        {/* MEN AND REVIEW / THE LAST THINGS IN THE PAGE */}
-        {/* men  */}
-        <p style={{ paddingTop: "10px", paddingBottom: "10px", marginLeft: "30px", }} className="line" />
+        {/* THE BIG IMAGE AND REVIEW / THE LAST THINGS IN THE PAGE */}
+        {/* HERE STARTS WITH THE BIG IMAGE  */}
 
-        <div id="t-a-c">
+        <div id="t-a-c" className="mt-4" style={{borderTop: "1px solid red"}} >
           <img src={data.images.special} alt="special" width="80%" />
         </div>
 
@@ -381,26 +369,18 @@ function SingleProduct() {
               <p className="text-info" id="c-p" onClick={() => setReport(false)}>Close</p>
               <form onSubmit={reportHandler}>
               <textarea ref={reportRef} style={{width: '100%'}} />
-              <button className="button" >Send</button>
+              <button className="btn" >Send</button>
               </form>
             </div>
 }
 
 
           </div>
-          <div className="d-flex" style={{ marginTop: "40px" }}>
 
-            <div>
-                <div className="blue" id="d-f">
-                    <div className="front" />
-                    <div className="back" />
-                </div>
-              <div className="col">
-                <div className="between">
-                  <h4>Review with images</h4>
-                  <p className="blue">See all photos</p>
-                </div>
-                <div className="align" style={{ borderBottom: "1px solid grey", paddingBottom: "30px" }}>
+
+              <section className="overflow-hidden">
+                <div className="between"> <h4>Review with images</h4> <p className="blue" style={{marginTop:'10px'}}>See all photos</p></div>
+                <div className="d-flex align-items-center line" >
                   <i className="fa fa-arrow-left" />
                   <div className="d-flex">
                     {data.images.others.map((ev,i) => (
@@ -409,10 +389,7 @@ function SingleProduct() {
                   </div>
                   <i className="fa fa-arrow-right" />
                 </div>
-              
-              </div>
-            </div>
-          </div>
+          </section>
 
       
 
@@ -446,7 +423,7 @@ function SingleProduct() {
                       ></textarea>
                       <div className="d-flex justify-content-end" id="a-c">
                         <h3 className="text-danger">{reviewErr}</h3>
-                        <button className="button" onClick={reviewHandler}> Submit Review</button>
+                        <button className="btn" onClick={reviewHandler}> Submit Review</button>
                       </div>
                     </form> 
                     :
@@ -468,6 +445,7 @@ function SingleProduct() {
           </section>
 
     {/* SIMILAR PRODUCT  */}
+<h3>You also may interested</h3>
     <Similar data={data} />
 
             </div>

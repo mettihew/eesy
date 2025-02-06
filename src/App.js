@@ -19,6 +19,7 @@ import Test from "./components/Test"
 import Account from "./components/Account"
 import AdminIssues from "./components/AdminIssues"
 import { useState } from "react";
+import Clothes from "./pages/Clothes"
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         <Route path="/category" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/clothes" element={<Clothes />} />
         <Route path="/order" element={<Order />} />
         <Route path="/s" element={<Search />} />
         <Route path="/test" element={<Test />} />

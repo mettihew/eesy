@@ -1,5 +1,13 @@
 /* ///////////////GLOBAL///////////////// */
 
+
+
+
+
+
+
+
+
 .show {
   top: 0;
   display: flex;
@@ -55,6 +63,12 @@
 #wrap {
   display: flex;
   flex-wrap: wrap;
+}
+
+#wrap-ce {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 #col {
@@ -154,6 +168,12 @@
   border-bottom: 1px solid rgb(158, 158, 158);
 }
 
+.render{
+  margin: 30px;
+  padding: 20px;
+  border: 3px solid red;
+}
+
 .color-global {
   width: 60px;
   height: 30px;
@@ -175,8 +195,8 @@
 
 /* header  HEADER HEAD*/
 
-.home000 img {
-  width: 33%;
+.explore-categories img {
+  width: 13%;
   padding: 1%;
 }
 
@@ -242,6 +262,10 @@ a {
 
 /* //////////////////////////////////////body box small version for phone size */
 
+.home-short{
+  display: none;
+}
+
 .home-category {
   display: flex;
   flex-wrap: wrap;
@@ -302,6 +326,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 /* //////////////////////////////// SIGNLE PRODUCT ////////////////////////////////// */
@@ -324,11 +349,15 @@ a {
   justify-content: space-around;
 }
 
+.title-img{
+  width: 300px;
+  border-radius: 10px;
+}
+
 .single-images {
-  /* width: 47%; */
+  /* width: 30%; */
   display: flex;
   justify-content: space-around;
-  /* display: grid; */
   direction: rtl;
 }
 
@@ -412,6 +441,69 @@ a {
 
 /* //////////////////login/////////// */
 
+/* google oath login  */
+.signin {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.signin2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.signin input,
+.signin button {
+  padding: 8px 25px;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+
+
+.signin-by-email-and-password {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid grey;
+  padding-right: 20px;
+}
+
+.google {
+  background-color: white;
+  padding-left: 20px;
+}
+
+.googles {
+  width: 260px;
+  display: flex;
+align-items: center;
+gap: 20px;
+  border-radius: 40px;
+  padding: 8px 25px;
+  margin-top: 10px;
+  font-size: 13px;
+  border: 1px solid grey;
+}
+
+.googles img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+
+.center{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* //////////google oath ends  */
+
+
+
 .login-signOut {
   display: flex;
   align-items: center;
@@ -462,18 +554,14 @@ a {
 
 .products-box-search {
   display: flex;
-  /* height: 250px; */
-  height: auto;
-  /* background-color: #E3E6E6; */
   cursor: pointer;
   border: 1px solid grey;
-  /* margin-top: 10px; */
-  /* margin-bottom: 10px; */
 }
 
 .products-box-search img {
   width: 200px;
   min-width: 200px;
+  padding: 5px;
   object-fit: contain;
 }
 
@@ -818,23 +906,11 @@ a {
 }
 
 /* ///////////////////////////////////////////ProductCart */
-
-.home111 {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.similar {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-.p-c2 {
-  width: 45%;
+.home-products {
+  width: 15%;
   padding: 10px;
 }
-.p-c2 img {
+.home-products img {
   width: 100%;
 }
 
@@ -865,8 +941,47 @@ a {
   /* padding: 0 10px; */
 }
 
-/* phone cellphone android  */
+/* phone cellphone android small */
 @media screen and (max-width: 650px) {
+
+  .products-box-search img {
+  width: 120px;
+  min-width: 120px;
+  object-fit: contain;
+}
+
+ .signin2{
+  display: grid;
+ } 
+ 
+
+  .single-images{
+    font-size: 10px;
+  }
+
+  .title-img{
+    width: 220px;
+    border-radius: 10px;
+  }
+
+  .home111 {
+    justify-content: center;
+  }
+
+  .home-products {
+    width: 49%;
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .home-short{
+    display: block;
+  }
+
+  .explore-categories img {
+    width: 33%;
+  }
+
   .body-all-boxes {
     margin-top: -50px;
   }
@@ -900,7 +1015,7 @@ a {
   }
 
   .search-input-width {
-    width: 80%;
+    width: 90%;
   }
 
   .header-long {

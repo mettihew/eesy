@@ -5,19 +5,22 @@ import { URL } from "../utils/URL";
 export function History(props) {
   const [history, setHistory] = useState();
 
+  
+  
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if(user){
       axios
-      .post(`${URL}/get-history`, { history: props.user.history })
+      .post(`${URL}/get-history`, { history: user.history })
       .then((res) => setHistory(res.data));
+    }
     }, [])
   return (
     <>
       {history && (
-        <div className="py-4">
-          <h3>History</h3>
-          <div className="similar">
+          <div className="d-flex flex-wrap">
             {history?.map((ev) => (
-              <div key={ev._id} className="p-c2">
+              <div key={ev._id} className="home-products">
                 <a href={`/product/${ev._id}`}>
                   <img src={ev.images.title} alt="title" />
                 </a>
@@ -25,7 +28,6 @@ export function History(props) {
               </div>
             ))}
           </div>
-         </div>
       )}
     </>
   );
@@ -43,18 +45,15 @@ export function Similar(props) {
   return (
     <>
       {similar && (
-        <div className="py-4">
-          <h3>Similar</h3>
-          <div className="similar">
+          <div className="d-flex flex-wrap">
             {similar?.map((ev) => (
-              <div key={ev._id} className="p-c2">
+              <div key={ev._id} className="home-products">
                 <a href={`/product/${ev._id}`}>
                   <img src={ev.images.title} alt="title" />
                 </a>
                 <p>{ev.name}</p>
               </div>
             ))}
-          </div>
         </div>
       )}
     </>

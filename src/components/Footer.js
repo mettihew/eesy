@@ -28,7 +28,7 @@ const emailHandler = (ev) => {
             <BsYoutube className="fs-4" />
           </div>
            {/* Stay in contac + EMAIL  */}
-           <div id="d-f" className="py-3">
+           <div id="d-f" className="py-1">
             {/* <input className="form-control" placeholder="Stay in contact" />
             <Button variant="contained" size="small" color="info" onClick={(ev) => emailHandler(ev)}>
               Email <BsSend  />

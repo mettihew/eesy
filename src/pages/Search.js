@@ -6,6 +6,7 @@ import { URL } from "../utils/URL";
 
 function Search() {
   const [data, setData] = useState()
+  const [data2, setData2] = useState()
   const [filter, setFilter] = useState(false)
   const [brand, setBrand] = useState()
 
@@ -14,6 +15,13 @@ function Search() {
     axios.post(`${URL}/search${query}`)
     .then(res => {
       setData(res.data)
+  })
+    .catch((err) => alert(err.reuest.response))
+
+//  I TRIED TO GET JUST CATEGORIES HERE TO USE IN FILTER IN SEARCH PAGE
+    axios.post(`${URL}/search2${query}`)
+    .then(res => {
+      setData2(res.data)
   })
     .catch((err) => alert(err.reuest.response))
   }, [])
@@ -50,14 +58,6 @@ function Search() {
     </>}
   </div>
 
-    {/* Number of results */}
-{(data?.page * data?.limit < data.number ) ? 
-<p className="text-warning">Showing {data?.start}-{data?.page * data?.limit} results of total {data?.number} products</p>
-:
-<p className="text-warning">Showing {data?.start}-{data?.number} results of total {data?.number} products</p>
-}
-
-
 {data?.search.length > 1 &&
   <>
   <div className="hide-filter">
@@ -80,10 +80,19 @@ function Search() {
 }
 
 <div>
+
+    {/* Number of results */}
+    {(data?.page * data?.limit < data2?.number ) ? 
+<p className="text-warning">Showing {data?.start}-{data?.page * data?.limit} results of total {data2?.number} products</p>
+:
+<p className="text-warning">Showing {data?.start}-{data2?.number} results of total {data2?.number} products</p>
+}
+
+
   
         {data?.search?.map((ev) => {
           return (
-            <a href={`/product/${ev._id}`} key={ev._id} >
+            <a href={`/product/${ev._id}`} key={ev._id} id="no-a" >
 
               {ev.best_seller ?
                 <div className="best-seller-orange" style={{marginTop:'10px'}}>
@@ -99,14 +108,14 @@ function Search() {
 
                 <img src={ev.images.title} style={{borderRadius: !ev.best_seller ? "10px 10px 0 0" : ""}} alt="title"/>
 
-                <div id="d-g">
-                <h6>{ev.name}</h6>
+                <div id="d-g" >
+                <p className="p-1">{ev.name}</p>
                 <div className="d-flex">
                   <h6 className="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;&#9734;</h6>
                   <p className="text-primary">34.4</p> 
                 </div>
                 <p className="grey">100+ bought in past month</p>
-                <div className="d-flex"><p>$</p><h1>{ev.price}</h1></div>
+                <div className="d-flex"><p>$</p><h6>{ev.price}</h6></div>
                 <p>{ev.category}</p>
                 <p>brand: {ev.brand}</p>
                 </div>
@@ -116,23 +125,64 @@ function Search() {
             </a>)
         })}
 </div>
-
         {data?.search?.length === 0 && <div id="center"> <h2>No result found</h2> <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwZBISiHxiUPWBHNJZBGjWkz_9B1VyYnAEFg&s" width={"100px"} alt="loading" /> </div> }
 </div>
 
 
-{data.number <= data.limit ? 
-<p>End of the results, {data?.number} products</p>
+{data2?.number <= data.limit ? 
+<p>End of the results, {data2?.number} products</p>
 :
     <div id="d-f">
       {data?.page > 1 && <p className="products-count px-5" onClick={pageHandler} value={data?.page - 1}>Previous</p> }
       {data?.page > 1 && <p className="products-count" onClick={pageHandler} value={data?.page - 1}>{data?.page - 1}</p> }
        <p className="products-count-main"> {data?.page} </p>
-      {data?.limit * data?.page < data?.number && <p className="products-count" onClick={pageHandler} value={data?.page + 1}>{data?.page + 1}</p> }
-      {(data?.limit + data?.limit) * data?.page < data?.number && <p className="products-count" onClick={pageHandler} value={data?.page + 2}>{data?.page + 2}</p> }
-      {data?.limit * data?.page < data?.number && <p className="products-count px-4" onClick={pageHandler} value={data?.page + 1}>Next</p> }
+      {data?.limit * data?.page < data2?.number && <p className="products-count" onClick={pageHandler} value={data?.page + 1}>{data?.page + 1}</p> }
+      {(data?.limit + data?.limit) * data?.page < data2?.number && <p className="products-count" onClick={pageHandler} value={data?.page + 2}>{data?.page + 2}</p> }
+      {data?.limit * data?.page < data2?.number && <p className="products-count px-4" onClick={pageHandler} value={data?.page + 1}>Next</p> }
     </div>
 }
+
+
+
+
+{/* ----------------------- Use it ---------------- */}
+{/* <div  id="around" className="border border-primary overflow-scroll">
+          <a href="/product?cat=refrigerator" className="d-flex align-items-center gap-10" id="no-a">
+            <img src="https://dkstatics-public.digikala.com/digikala-products/8f515e803a4ce3919fb7ac7938f70ca8924005bc_1687784104.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80" alt="ser" width={"100px"} />
+            <div>
+              <h6>Refrigerators</h6>
+              <p>Fast shipping at working days</p>
+            </div>
+          </a>
+
+          <a href="/product?cat=ice-maker" className="d-flex align-items-center gap-10" id="no-a">
+            <img src="https://dkstatics-public.digikala.com/digikala-products/eda97cd4cedd3ef6e34fff75e9f3ff78e9d30541_1661010332.jpg?x-oss-process=image/resize,m_lfit,h_800,w_800/quality,q_90" width={"100px"} alt="ser" />
+            <div>
+              <h6>Ice Makers</h6>
+              <p>Fast shipping at working days</p>
+            </div>
+          </a>
+
+          <a href="/product?cat=microwave" className="d-flex align-items-center gap-10" id="no-a">
+            <img src={"https://dkstatics-public.digikala.com/digikala-products/f151d6543bcccc4249751af6398afbf01509808b_1697099137.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/quality,q_80"} alt="ser" width={"100px"} />
+            <div>
+              <p>Fast shipping at working days</p>
+            </div>
+          </a>
+
+          <a href="/product?cat=dishwasher" className="d-flex align-items-center gap-10" id="no-a">
+            <img src={"https://dkstatics-public.digikala.com/digikala-products/ab4cfdd133aa2df9f0a9dcb621ec1f94040f4430_1699692281.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/quality,q_80"} alt="ser" width={"100px"} />
+            <div>
+              <p>Fast shipping at working days</p>
+            </div>
+          </a>
+</div> */}
+
+
+
+
+
+
 
 
     </div>
