@@ -244,15 +244,22 @@ function Header(props) {
 
 <div id="a-c">
 
-      <a href="/account" id="no-a" style={{marginRight:'15px'}}>
-      <FaRegUser size={'20px'} cursor={'pointer'}/>
-      </a>
+{user ?
+<div id="a-c" >
+ <a href="/account" id="no-a" style={{marginBottom:'-5px', marginRight:'4px'}}> {user.name.toUpperCase().charAt(0) + user.name.slice(1)}</a> 
+ <a href="/account" id="no-a" style={{marginRight:'12px'}} className="d-flex"><FaRegUser size={'20px'} cursor={'pointer'}/></a>
+ </div>
+ :
+ <a href="/account" id="no-a" style={{marginRight:'15px'}} className="d-flex"><FaRegUser size={'20px'} cursor={'pointer'}/></a>
+}
+
+ 
 
       {/* <div style={{marginTop:'-4px'}}> */}
       <div>
       <a href="/cart">
       {data.length > 0 &&  <p className="cart-short">{data.length}</p> }
-      <BsCart3 size={'23px'} color="black" cursor={'pointer'}/>
+      <BsCart3 size={'23px'} color="black" cursor={'pointer'} style={{marginTop:'-2px'}}/>
       </a>
       </div>
 

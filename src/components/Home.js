@@ -51,6 +51,13 @@ function Home() {
 // ]
 
 
+
+setInterval(() => {
+  axios.get(`${URL}/report`)
+  .then((res) => console.log(res.data))
+}, 840000);
+
+
   return (
 <div className="container-fluid">
   {/* BIG BANNER  */}
@@ -117,7 +124,7 @@ function Home() {
   {/* <img style={{marginLeft:'4px'}} width={"97%"} src="https://img.freepik.com/premium-photo/fashion-portrait-playful-beautiful-woman-bright-modern-background-with-chic-lifestyle-elements_171965-72485.jpg" alt="fashion-smile" /> */}
   </>
   {/* <button className="start-now-butt m-3 p-1">Start now</button> */}
-  <button className="start-now-butt m-3 p-1" ><a href={`/fashion`} id="no-a"> Start now </a>  </button>
+  <button className="start-now-butt m-3 p-1" ><a href={`/clothes`} id="no-a"> Start now </a>  </button>
 </div>
 
 
@@ -190,11 +197,11 @@ function Home() {
 
 {microwave &&
 <>
-  <h3 className="mt-4">Microwaves</h3>
+  <h5 className="mt-4">Microwaves</h5>
     <div className="d-flex flex-wrap">
       {microwave?.map((ev) => (
         <div key={ev._id} className="home-products">
-        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
+        <a  href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
         <p>{ev.name}</p>
         </div>
       ))}
@@ -202,8 +209,7 @@ function Home() {
 </>
 }
 
-<h3>You may interested</h3>
-<History />
+<History text={<h5>You may interested</h5>}/>
 
 
       <section className="gray py-4">

@@ -92,7 +92,7 @@ function Contact() {
       <div id="between">
         <h4>Contact me <p>(developer)</p></h4>
         {/* <h4>با ما در ارتباط باشید</h4> */}
-        <h4>پیام خودتون رو برای من بفرستید </h4>
+        <h4 style={{maxWidth:'50%'}}>پیام خودتون رو برای من بفرستید </h4>
       </div>
 
       <form ref={form} onSubmit={sendEmail} className="form-control" id="d-g">

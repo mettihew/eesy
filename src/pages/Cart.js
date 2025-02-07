@@ -11,12 +11,15 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+import loading from '../images/loading.gif'
+
 function Cart() {
   const [data, setData] = useState();
   let totalAmount = 0
   // const [similar, setSimilar] = useState()
 
   const [loadingAdd, setLoadingAdd] = useState(false)
+  const [loadingdel, setLoadingdel] = useState(false)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -63,10 +66,20 @@ function Cart() {
     .catch((err) => alert(err.request.response))
   }
 
+  const deleteHandler = (ev) => {
+    setLoadingdel(true)
+    axios.post(`${URL}/delete-from-cart`, { pId: ev,  uId: user._id })
+    .then(res => {
+      localStorage.setItem('user', JSON.stringify(res.data))
+      window.location.reload()
+    })
+    .catch((err) => alert(err.request.response))
+  }
+
   const map = data.map((ev) => {
     return (
-      <div key={ev._id} className="cart-map py-4 line" >
-          <a href={`/product/${ev._id}`} id="d-f" className="gap-10">
+      <div key={ev._id} className="cart-map py-4 line"  >
+          <a href={`/product/${ev._id}`} id="no-a" className="d-flex gap-10" >
             <img width={"150px"} height={"100%"} src={ev.images.title} alt="title"/>
             <div id="d-g" >
               <p style={{maxWidth:'200px'}}>{ev.name}</p>
@@ -77,8 +90,8 @@ function Cart() {
               if (eve.pId === ev._id) {
                 {totalAmount += ev.price * eve.qty}
                 return (
-                  <div key={eve.pId} className=" d-flex">
-                    <button>Remove</button>
+                  <div key={eve.pId} className="d-flex">
+        {loadingdel ? <button className="btn"><img width={"40px"} src={loading} alt="loading" /></button> : <button onClick={() => deleteHandler(eve.pId)} className="btn">Remove</button>}
 
 <div id="j-c">
 <ButtonGroup>
@@ -117,14 +130,16 @@ function Cart() {
       <div style={{width:'800px'}}>
       <div id="d-f"> <h1>total amount: &nbsp;</h1> <h1 className="text-warning"> ${totalAmount}</h1> </div>
       {map}
+      <div className="border border-danger rounded-pill text-center p-2" style={{position: "sticky"}}> <a href="/order" id="no-a" className="text-warning h3">Continue to order</a></div>
       </div>
     }
 
 
 
+
 {/* SIMILAR PRODUCT  */}
-<History user={user}/>
-<Similar data={data}/>
+<History text={<h6 className="mt-5">You may interested</h6>}/>
+<Similar data={data} text={<h6>People also bought</h6>}/>
 
 
 

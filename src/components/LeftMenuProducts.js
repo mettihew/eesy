@@ -6,7 +6,7 @@ function LeftMenuProducts(props) {
     const { data } = props
     const seller= [{ brand: "Amazon" }, { brand: "Deawo" }]
 
-  let key; let urlMinPrice; let urlMaxPrice; let urlSort; let cat
+  let key; let urlMinPrice; let urlMaxPrice; let urlSort; let cat; let page;
 
   const search = window.location.search;
   const arr = search.split("&")
@@ -16,6 +16,7 @@ function LeftMenuProducts(props) {
     if(arr[k].includes("cat=")) cat = arr[k].split("=")[1]
     if(arr[k].includes("min_price=")) urlMinPrice = arr[k].split("=")[1]
     if(arr[k].includes("max_price=")) urlMaxPrice = arr[k].split("=")[1]
+    if(arr[k].includes("page=")) page = arr[k].split("=")[1]
   }  
 
     // getting and sending min and max price for RangeSlider price (picker) when user does not selected any price at the first place
@@ -65,10 +66,10 @@ if (sort && cat && !minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&so
 
 };
 
-const selectHandler = (ev) => {
+const sortHandler = (ev) => {
     if(sort){
-        const test = search.split('sort=')
-        window.location.href  = search.replace(test[1], ev.target.value);
+        const sort = search.split('sort=')
+        window.location.href  = search.replace(sort[1], ev.target.value);
     }else{
         window.location.href = search + '&sort=' + ev.target.value
     }
@@ -78,7 +79,7 @@ const selectHandler = (ev) => {
         <div className='left-menu-products container'>
 
 <h6>Select Sort</h6>
-    <select value={sort} onChange={(ev) => selectHandler(ev)}>
+    <select value={sort} onChange={(ev) => sortHandler(ev)}>
         <option value={''}>Sort by: Featured</option>
         <option value="price">price - low to high</option>
         <option value="-price">price - high to low</option>

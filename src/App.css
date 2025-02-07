@@ -5,6 +5,11 @@
 
 
 
+  /* A GOOD GREY COLOR  */
+  /* background-color: rgba(232, 230, 227, 0.87); */
+
+
+
 
 
 
@@ -128,6 +133,7 @@
 
 #no-a {
   color: black;
+  color: white;
   text-decoration: none;
 }
 
@@ -355,8 +361,8 @@ a {
 }
 
 .single-images {
-  /* width: 30%; */
   display: flex;
+  text-align: center;
   justify-content: space-around;
   direction: rtl;
 }
@@ -364,11 +370,16 @@ a {
 .others-img {
   width: 60px;
   height: 60px;
-  display: grid;
   border-radius: 8px;
   border: 2px solid skyblue;
   margin: 10px;
 }
+
+.others-img-div{
+  display: grid;
+  justify-content: space-around;
+}
+
 
 .single-product-text-align {
   text-align: justify;
@@ -944,9 +955,15 @@ gap: 20px;
 /* phone cellphone android small */
 @media screen and (max-width: 650px) {
 
+  .signin-by-email-and-password {
+    border-right: none;
+    padding: 10px 0;
+    border-bottom: 1px solid grey;
+  }
+
   .products-box-search img {
-  width: 120px;
-  min-width: 120px;
+  width: 140px;
+  min-width: 140px;
   object-fit: contain;
 }
 
@@ -954,14 +971,18 @@ gap: 20px;
   display: grid;
  } 
  
-
   .single-images{
-    font-size: 10px;
+    display: grid;
+    text-align: center;
   }
 
   .title-img{
-    width: 220px;
-    border-radius: 10px;
+    width: 100%;
+    max-width: 300px;
+    /* max-height: 300px; */
+    /* object-fit: cover; */
+    border-radius: 0;
+    /* border-radius: 10px; */
   }
 
   .home111 {
@@ -998,11 +1019,16 @@ gap: 20px;
   }
 
   .others-img {
-    width: 50px;
-    height: 50px;
-    border: 1px solid skyblue;
-    margin: 10px 0;
+    width: 70px;
+    height: 70px;
+    border-radius: 0px;
+    margin: 5px;
   }
+
+.others-img-div{
+  display: flex;
+}
+
 
   .search-div-width {
     width: 100%;

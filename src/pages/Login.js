@@ -96,7 +96,7 @@ function Login() {
       </div>
 </div>
 </div>
-<a href={`/register`}>Sign up</a>
+<a href={`/register`} className='text-decoration-none'>Sign up</a>
 
 
 </div>

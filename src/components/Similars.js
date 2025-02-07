@@ -4,21 +4,21 @@ import { URL } from "../utils/URL";
 
 export function History(props) {
   const [history, setHistory] = useState();
-
-  
   
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if(user){
+const history = JSON.parse(localStorage.getItem('history'))
+    if(history){
       axios
-      .post(`${URL}/get-history`, { history: user.history })
+      .post(`${URL}/get-history`, { history })
       .then((res) => setHistory(res.data));
     }
     }, [])
   return (
     <>
       {history && (
-          <div className="d-flex flex-wrap">
+        <>
+          {props.text}
+        <div className="d-flex flex-wrap">
             {history?.map((ev) => (
               <div key={ev._id} className="home-products">
                 <a href={`/product/${ev._id}`}>
@@ -28,6 +28,7 @@ export function History(props) {
               </div>
             ))}
           </div>
+      </>
       )}
     </>
   );
@@ -45,6 +46,8 @@ export function Similar(props) {
   return (
     <>
       {similar && (
+         <>
+          {props.text}
           <div className="d-flex flex-wrap">
             {similar?.map((ev) => (
               <div key={ev._id} className="home-products">
@@ -55,6 +58,7 @@ export function Similar(props) {
               </div>
             ))}
         </div>
+      </>
       )}
     </>
   );

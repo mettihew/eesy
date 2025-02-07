@@ -20,7 +20,7 @@ export default function Clothes() {
   </div>
 
     <p className="text-danger">I'm working on the page
-    <a href="/products">Explore appliance</a>
+    <a href="/products">Explore appliances instead</a>
     </p>
 
   </div>

@@ -1,84 +1,17 @@
-import { useState} from "react";
+export default function Order() {
+  return(
+    <div>
+      <p className="border border-danger m-3 p-3">This is a demo website and I cannot ship any products for you. 
+        Nevertheless, you can experience ordering them.</p>
 
-function Order() {
-  const [err, setErr] = useState(false)
+<form className='p-3'>
+<label>Update address</label>
+<input className="form-control" placeholder="Enter shipping address"></input>
+<button className="btn">Submit</button>
+</form>
 
-  const errHandler = () =>{
-    setErr(true)
-  }
-
-  return (
-    <div className="center">
-      <div className="d-grid">
-
-        <div className="order p-4">
-          <h5>Enter Shipping Address</h5>
-          <div className='d-grid m-4'>
-            <label>Country/Region</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>Full name</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>Phone number</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>Address</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>City</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>State</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>ZIP Code</label>
-            <input />
-          </div>
-
-        </div>
-
-        <div className="order p-4">
-          <h5>Enter Credit Card Detail</h5>
-          <div className='d-grid m-4'>
-            <label>Credit Card Number</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>CVV</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>Expiration Date(month)</label>
-            <input />
-          </div>
-
-          <div className='d-grid m-4'>
-            <label>Expiration Date(day)</label>
-            <input />
-          </div>
-
-        </div>
-<button onClick={errHandler}>Order</button>
-{err && <h4 id="red">All fields are required</h4>}
-
-      </div>
+      
+<button className="btn">Submit order to your orders</button>
     </div>
   )
-
 }
-export default Order
