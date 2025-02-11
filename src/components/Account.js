@@ -27,7 +27,10 @@ export default function Account(){
 
   if(!user) return window.location.href = "/login"
 
-  
+  function outHandler () {
+  localStorage.removeItem('user')
+   window.location.reload() 
+  }
   
   return (
     <div id='d-f'>
@@ -47,10 +50,11 @@ export default function Account(){
 <Link to="/your-orders" className="between m-2" id="no-a"> <div  className="d-flex gap-1 cursor-pointe" > <FaRegAddressCard style={{marginTop:'4px'}}/>Address </div> <MdKeyboardArrowRight/> </Link>
 <a href="/contact" className="between m-2" id="no-a"> <div  className="d-flex gap-1 cursor-pointe" > <IoMdContact style={{marginTop:'4px'}}/>Contact </div> <MdKeyboardArrowRight/> </a>
 
+              <button className='btn text-danger' onClick={() => outHandler()}>out</button>
               
-              <button className='btn text-danger' onClick={() => { localStorage.removeItem('user') 
-                window.location.reload()}}>Sign Out
-              </button>
+              {/* // <button className='btn text-danger' onClick={() => { localStorage.removeItem('user')  */}
+                {/* // window.location.reload()}}>Sign Out */}
+              {/* // </button> */}
 
       
 <History text={<p id="a-c" className="gap-2"><MdHistory size={"20px"} /> From your history</p>}/>

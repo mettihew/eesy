@@ -68,7 +68,7 @@ function Search() {
         </div>
           :
       <div>
-        <button onClick={() => setFilter(true)}>filters</button>
+        <button className="btn" onClick={() => setFilter(true)}>filters</button>
       </div>
         }
   </div>
@@ -108,14 +108,14 @@ function Search() {
 
                 <img src={ev.images.title} style={{borderRadius: !ev.best_seller ? "10px 10px 0 0" : ""}} alt="title"/>
 
-                <div id="d-g" >
+                <div id="d-g" style={{color: 'black'}}>
                 <p className="p-1">{ev.name}</p>
                 <div className="d-flex">
                   <h6 className="text-warning">&#9733;&#9733;&#9733;&#9733;&#9733;&#9734;</h6>
                   <p className="text-primary">34.4</p> 
                 </div>
                 <p className="grey">100+ bought in past month</p>
-                <div className="d-flex"><p>$</p><h6>{ev.price}</h6></div>
+                <div className="d-flex"><p>$</p><h6 className="text-warning">{ev.price}</h6></div>
                 <p>{ev.category}</p>
                 <p>brand: {ev.brand}</p>
                 </div>

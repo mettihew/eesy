@@ -51,13 +51,6 @@ function Home() {
 // ]
 
 
-
-setInterval(() => {
-  axios.get(`${URL}/report`)
-  .then((res) => console.log(res.data))
-}, 840000);
-
-
   return (
 <div className="container-fluid">
   {/* BIG BANNER  */}
@@ -195,7 +188,7 @@ setInterval(() => {
   <h2>If you don't get the data after </h2>
   </div>} */}
 
-{microwave &&
+ {microwave &&
 <>
   <h5 className="mt-4">Microwaves</h5>
     <div className="d-flex flex-wrap">
@@ -207,7 +200,7 @@ setInterval(() => {
       ))}
     </div>
 </>
-}
+} 
 
 <History text={<h5>You may interested</h5>}/>
 

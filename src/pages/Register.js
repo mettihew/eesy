@@ -38,7 +38,7 @@ function SignUp() {
   // dispatch(createUser({ name: name, password: pass, email: email }));
 
   return (
-    <div className="signin">
+    <div className="signin py-4">
       <div className="text-center">
         <h2>Create an account</h2>
         <div className="center">

@@ -1,18 +1,13 @@
-import React, { useEffect, useState } from 'react'
 import { Button } from "react-bootstrap"
 import * as yup from "yup"
 import { useFormik } from "formik"
-import { Spinner } from 'react-bootstrap'
 import { URL } from "../utils/URL";
 import axios  from 'axios'
 import * as jwt_decode from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-// import facebook from '../images/facebook.png'
 
 function Login() {
-  const [spinner, setSpinner] = useState(false)
-  const [userasdf, setUser]  = useState()
 
   const schema = yup.object({
     email: yup.string().required("Email is required"),
@@ -26,7 +21,6 @@ function Login() {
     },
     validationSchema: schema,
     onSubmit: (v) => {
-      setSpinner(true)
       axios.post(`${URL}/login`, v)
       .then((res) => {
           localStorage.setItem('user', JSON.stringify(res.data))
@@ -38,26 +32,12 @@ function Login() {
     const user = JSON.parse(localStorage.getItem('user'))
     if(user) return window.location.assign("/account")
 
-  setInterval(() => {
-    setSpinner(false)
-  }, 2000);
-
   return (
     <div className='login-signOut'>
       
-        {/* <form className='login'> */}
-          {/* Sign in
-          <div className='text-danger'>{formik.errors.email}</div>
-          <input type='email' onChange={formik.handleChange("email")} value={formik.values.email} placeholder='email' />
-          <div className='text-danger'>{formik.errors.password}</div>
-          <input type='password' placeholder='password' onChange={formik.handleChange("password")} value={formik.values.password} />
-          <Button onClick={formik.handleSubmit} >
-            {spinner ? <Spinner /> : <p className='p-1'>Login</p>}
-          </Button> */}
+          <div className="signin py-4">
 
-          <div className="signin">
-
-<div className="text-center">
+<div className="text-center ">
   <h1>Sign in </h1>
   <div className="center">
   <input type="checkbox" style={{marginBottom:"10px"}} value={true}/>
@@ -85,8 +65,7 @@ function Login() {
   <GoogleLogin
     onSuccess={(ev) => {
       const theUser = jwt_decode(ev.credential)
-      console.log(ev)
-      setUser(theUser)
+      // setUser(theUser)
     }}
     onError={() => {
       console.log("Login Failed");

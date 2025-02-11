@@ -5,7 +5,6 @@ import { useLocation } from "react-router";
 
 import { FaAngleRight, FaAngleUp, FaHeart } from 'react-icons/fa'
 import { FaCartShopping, FaCodeCompare } from "react-icons/fa6";
-import LoginModal from '../components/LoginModal'
 // import ProductCard from "../components/ProductCard";
 import axios from "axios";
 import { URL } from "../utils/URL";
@@ -35,13 +34,18 @@ function SingleProduct() {
   const [data, setData] = useState(null)
   const user = JSON.parse(localStorage.getItem('user'))
   const [inCart, setInCart] = useState()
+  const [inCartLocal, setInCartLocal] = useState()
 
   useEffect(() => {
     // GET THE PRODUCT
     if(!data){
      axios.get(`${URL}/product/${pId}`)
-    .then(res => setData(res.data))
+    .then(res => {
+      setData(res.data)
+      setColorDiv(res.data.color[0])
+    })
     .catch(err => alert(err.request.response))
+
 
     // IS THE PRODUCT IN MY CART?
     const user = JSON.parse(localStorage.getItem('user'))
@@ -50,21 +54,34 @@ function SingleProduct() {
         return ev.pId === pId
       })
       setInCart(cart)
+    }
 
-    // MAKING HISTORY IN USER BACKEND FOREVER
-    // DELETE IT LATER
-    // DELETE IT LATER
-    // DELETE IT LATER
-    // DELETE IT LATER
-    // DELETE IT LATER
-    // axios.post(`${URL}/add-history`, {pId, uId: user._id})
-    // .then((res) => localStorage.setItem('user', JSON.stringify(res.data)))
-  }
+//  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+    const cartL = JSON.parse(localStorage.getItem('cart'))
+    if(cartL){
+      let idArr = []
+       cartL.find(ev => {
+         if(ev.pId === pId){
+           idArr.push(ev)
+          }
+        })
+
+      idArr.find(ev => {
+if(colorDiv === ev.color){
+  setInCartLocal(ev)
+}})
+if(idArr.length > 1){
+  setInCartLocal(idArr[0])
+}else{
+  setInCartLocal(idArr)
 }
+}}
 
     // MAKING HISTORY JUST IN BROWSER LOCALSTORAGE WITHOUT LOGIN
 const history = JSON.parse(localStorage.getItem('history'))
 if(history){
+  if(history.includes(pId)) return
   history.push(pId)
   localStorage.setItem('history', JSON.stringify(history))
 }
@@ -72,21 +89,71 @@ if(!history){
   const history = [pId]
   localStorage.setItem('history', JSON.stringify(history))
 }
-
-
   }, [data]) // "data" is important for getting suggestions
+  if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>  
 
-  if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>
+
+
+
+
+
+console.log('incartlocal', inCartLocal);
+
+
+
+const colorHandler = (ev) => {
+  setColorDiv(ev)
+
+  const cartL = JSON.parse(localStorage.getItem('cart'))
+  if(cartL){
+    let idArr = []
+     cartL.find(ev => {
+       if(ev.pId === pId){
+         idArr.push(ev)
+        }
+      })
+
+    idArr.find(ev => {
+if(colorDiv === ev.color){
+setInCartLocal(ev)
+}else{
+  setInCartLocal(null)
+}
+})}
+}
+
+
 
   const addHandler = (ev) => {
-    if (!colorDiv) return setColorErr(true)
-    setColorDiv(ev)
+    // if (!colorDiv) return setColorErr(true)
+    // setColorDiv(ev)
     axios.post(`${URL}/add-to-cart`, { pId: data._id, uId: user._id, color: colorDiv })
     .then(res => {
       localStorage.setItem('user', JSON.stringify(res.data))
       window.location.reload()
     })
     .catch((err) => alert(err.request.response))
+    setColorDiv("")
+  }
+
+  const addHandlerLocalStorage = (ev) => {
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    if(cart){
+      cart.map(ev => {
+      if(ev.pId.includes(pId) && ev.color === colorDiv ) {
+        const cart2 = [{ pId: data._id, color: colorDiv, qty: ev.qty += 1  }]
+        localStorage.setItem('cart', JSON.stringify(cart2))
+      }else{
+        const cart2 = { pId: data._id, color: colorDiv, qty: 1  }
+        cart.push(cart2)
+        localStorage.setItem('cart', JSON.stringify(cart))
+      }
+    })}
+    if(!cart){
+      const cart = [{ pId: data._id, color: colorDiv, qty: 1 }]
+      localStorage.setItem('cart', JSON.stringify(cart))
+    }
+    // setColorDiv(null)
   }
 
   const increaseHandler = () => {
@@ -103,7 +170,31 @@ if(!history){
     .catch((err) => alert(err.request.response))
   }
 
-  const removeHandler = () => {
+
+  const increaseHandlerLocal = () => {
+    setLoadingAdd(true)
+    const cart = [{ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 }]
+    localStorage.setItem('cart', JSON.stringify(cart))
+      setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 })
+      setLoadingAdd(false)
+}
+    // if (!colorDiv) return setColorErr(true)
+      // setColorDiv(ev)
+      // const cart = JSON.parse(localStorage.getItem('cart'))
+
+    // axios.post(`${URL}/increase-cart`, { pId: data._id, uId: user._id, qty: inCart.qty + 1, color: inCart.color })
+    // .then(res => {
+    //   localStorage.setItem('user', JSON.stringify(res.data))
+    //   const cart = res.data.cart.find(ev => {
+    //     return ev.pId === pId
+    //   })
+    //   setInCart(cart)
+    //   setLoadingAdd(false)
+    // })
+    // .catch((err) => alert(err.request.response))
+  // }
+
+  const decreaseHandler = () => {
     setLoadingAdd(true)
     setColorErr(false)
     axios.post(`${URL}/remove-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
@@ -116,6 +207,21 @@ if(!history){
       setLoadingAdd(false)
     })
     .catch((err) => alert(err.request.response))
+  }
+
+  const decreaseHandlerLocal = () => {
+    setLoadingAdd(true)
+    // setColorErr(false)
+    // axios.post(`${URL}/remove-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
+    // .then(res => {
+    //   localStorage.setItem('user', JSON.stringify(res.data))
+    //   const cart = res.data.cart.find(ev => {
+    //     return ev.pId === pId
+    //   })
+    //   setInCart(cart)
+    //   setLoadingAdd(false)
+    // })
+    // .catch((err) => alert(err.request.response))
   }
 
   const handleFavorite = () => {
@@ -173,6 +279,11 @@ if(!history){
         .catch((err) => console.log('fail'))
       }
       
+
+
+      
+
+
   return (
     //  MAIN DIV - ALL SECTIONS - KEEPYING SECTION AFTER SECTION - LINE BY LINE - GRID 
     <div>
@@ -234,20 +345,14 @@ if(!history){
             <div id="d-f" className="gap-30">
                           {data.color.map((ev, i) => (
                           <div key={i}>
-                            <div onClick={() => setColorDiv(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
+                            <div onClick={() => colorHandler(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
                             <p>{ev}</p>
                           </div>
                         ))} 
             </div>
 
 
-            <p className="blue">Size Chart</p>
-            {/* <p>. 100% Cotton</p> */}
-            {/* <p>. Imported</p> */}
-            {/* <p>. Lace Up closure</p> */}
-            {/* <p>. Machine Wash</p> */}
-            {/* <p>{data[0]?.description}</p> */}
-            <p>{data.feauture}</p>
+           
           </div>
 
           {/* 1 - LOGIN  */}
@@ -261,7 +366,7 @@ if(!history){
                     {inCart ? 
                     <div id="j-c">
           <ButtonGroup>
-              <Button aria-label="reduce" onClick={() =>  removeHandler() }><RemoveIcon fontSize="small" /></Button>
+              <Button aria-label="reduce" onClick={() =>  decreaseHandler() }><RemoveIcon fontSize="small" /></Button>
               {loadingAdd ? <h1>...</h1> : <h1>{inCart.qty}</h1>}
               <Button aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
           </ButtonGroup>
@@ -285,10 +390,9 @@ if(!history){
                       </div>
                       :
                     // DO NOT HAVE THE PRODUCT
-                        <div className="single-product-add-to-cart-button" id="ac">
-                        {/* <p style={{ color: 'blue', fontSize:'small'}}>افزودن به لیست من</p> */}
+                        // <div className="single-product-add-to-cart-button" id="ac">
                       <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite <FaHeart color="black" /></button>
-                        </div>
+                        // </div>
                     }
                   </>
               }
@@ -308,22 +412,62 @@ if(!history){
                       </div>
                       :
                     // DO NOT HAVE THE PRODUCT
-                        <div className="single-product-add-to-cart-button" id="ac">
-                        {/* <p style={{ color: 'blue', fontSize:'small'}}>Add to Compare Product</p> */}
+                        // <div id="ac">
                       <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
-                      </div>
+                      // </div>
                     }
                   </>
               }
             </>
           :
-              // LOGIN - NOT ADD 
-          <>
-          {/* <button className="button">Add to cart</button> */}
-              <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
-                <LoginModal name="single-product-like" />
-              </i>
-          </>
+              // NOT LOGGED IN - ADD TO LOCALSTORAGE CART
+
+
+
+
+<div className="btn bottom-0 w-100 text-center border border-warning rounded-5">
+{/* {(!colorDiv) && !colorErr && <p>Select color to order</p>} */}
+{/* {(!colorDiv) && !colorErr && <div id="d-f"><p>Color: White</p><p>price: 10</p></div>} */}
+{/* {colorErr && !colorDiv && <p className="text-danger text-center">Select color first</p>} */}
+{/* {(colorDiv) && <p className="text-success">You are ready to Order</p>} */}
+{/* {console.log(inCartLocal.color, colorDiv)} */}
+{/* {(inCartLocal, inCartLocal.color === colorDiv) ?  */}
+{(inCartLocal) ? 
+<div id="between" >
+  {console.log('incart color:',inCartLocal.color,'colorDiv', colorDiv)}
+  ${data.price}
+<ButtonGroup>
+<Button aria-label="reduce" onClick={() =>  decreaseHandlerLocal() }><RemoveIcon fontSize="small" /></Button>
+{loadingAdd ? <h1>...</h1> : 
+<>
+<div className="btn w-100 border " >
+{/* //////// jjjjjjjjjjjjj  */}
+{inCartLocal.qty} 
+</div>
+</>
+}
+<Button aria-label="increase" onClick={() => increaseHandlerLocal()}><AddIcon fontSize="small" /></Button>
+</ButtonGroup>
+ {inCartLocal ? inCartLocal.color : colorDiv}
+</div>
+: 
+<button onClick={addHandlerLocalStorage} type="submit" className="btn w-100 h-100" >
+Add to Cart  <FaCartShopping /> 
+</button>
+}
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
           }
           </div>
 
@@ -359,8 +503,8 @@ if(!history){
         {/* THE BIG IMAGE AND REVIEW / THE LAST THINGS IN THE PAGE */}
         {/* HERE STARTS WITH THE BIG IMAGE  */}
 
-        <div id="t-a-c" className="mt-4" style={{borderTop: "1px solid red"}} >
-          <img src={data.images.special} alt="special" width="80%" />
+        <div id="t-a-c" className="mt-4"  >
+          <img src={data.images.special} alt="special" className="special-img" />
         </div>
 
         <div className="m-4">
@@ -445,9 +589,7 @@ if(!history){
                       </div>
                     </form> 
                     :
-                  <i className="fa fa-user" style={{ fontSize: "20px", textAlign:'center', width:'100px' }} >
-                    <LoginModal name="single-product-like" />
-                  </i>
+                    <a href="login">please login to review</a>
                     }
 
                     <div id="d-g">

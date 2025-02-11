@@ -24,12 +24,24 @@ import YourOrders from "./pages/YourOrders"
 
 
 function App() {
+ 
     const [modal, setModal] = useState(false);
+    const [ross, setRoss] = useState(false);
+
+    function clickHandler() {
+      setRoss(false)
+      setModal(false)
+    }
+  
+    function openHandler(ev) {
+      setRoss(true)
+      setModal(ev)
+    }
 
   return (
     <BrowserRouter basename="/" >
-      <div className={modal ? "blackModal" : ""} />
-      <Header onBlur={ev => setModal(ev)} />
+      <div className={modal ? "blackModal" : ""} onClick={clickHandler}/>
+      <Header downBit={ross} onOpen={openHandler} onClick={clickHandler}/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -44,11 +56,11 @@ function App() {
         <Route path="/order" element={<Order />} />
         <Route path="/your-orders" element={<YourOrders />} />
         <Route path="/s" element={<Search />} />
-        <Route path="/test" element={<Test />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/favorite" element={<Favorite />} />
         <Route path="/compare-product" element={<CompareProduct />} />
         <Route path="/admin-issues" element={<AdminIssues />} />
+        <Route path="/test" element={<Test />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

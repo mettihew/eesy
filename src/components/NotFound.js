@@ -1,7 +1,7 @@
 
  function NotFound() {
     return(
-        <div className="p-5 text-center m-5">
+        <div id="j-c" style={{minHeight:'70vh'}}>
         <h1>Page Not Found</h1>
         </div>
     )

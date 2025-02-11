@@ -19,9 +19,11 @@ function Header(props) {
 
   const [data, setData] = useState([]);
   const [ip, setIp] = useState([]);
-  const [searchModal, setSearchModal] = useState(false);
+  // const [searchModal, setSearchModal] = useState(props.downBlur);
   const [searchData, setSearchData] = useState([]);
   const [searchHistory, setSearchHistory] = useState([]);
+
+   
 
   useEffect(() => {
     // CART LENGTH
@@ -32,7 +34,7 @@ function Header(props) {
       axios
         .post(`${URL}/get-cart`, { uId })
         .then((res) => setData(res.data))
-        .catch((err) => alert(err.request.reponse));
+        .catch((err) => console.log(err.request.reponse));
 
       //  USER IP ADDRESS
       axios
@@ -82,8 +84,9 @@ function Header(props) {
 
   const focusHandler = () => {
     setToGray("black");
-    props.onBlur(true);
-    setSearchModal(true);
+    // props.onBlur(true);
+    props.onOpen(true)
+    // setSearchModal(true);
 
     setSearchData(localStorage.getItem("search"));
 
@@ -93,7 +96,6 @@ function Header(props) {
         .then((res) => setSearchHistory(res.data))
         .catch((res) => console.log(res.request.response));
     }
-
     if (!type && user) {
       axios
         .post(`${URL}/get-history`, { history: user.history })
@@ -101,16 +103,15 @@ function Header(props) {
     }
   };
 
-  const blurHandler = () => {
-    setToGray("gray");
-    props.onBlur(false);
-    setSearchModal(false);
-  };
+
+  const chanHandler = () => {
+    props.onOpen(true)
+  }
 
   const searchMap = searchHistory?.map((ev, i) => {
     if (i <= 3)
       return (
-        <a href="" key={ev._id} id="col-cen">
+        <a href={`/product/${ev._id}`} key={ev._id} id="col-cen">
           <img
             src={ev.images.title}
             width={"70px"}
@@ -129,6 +130,9 @@ function Header(props) {
 
     <div id="my-color" className="header-long pb-1">
 
+
+   
+
       {/* LINE ONE  */}
 
       <div id="around" style={{ display: "flex", flexWrap: "wrap" }}>
@@ -143,7 +147,7 @@ function Header(props) {
           <p>Ship to: {ip} </p>
         </div>
 
-        <div id="a-c" style={{ border: searchModal ? "2px solid orange" : ""}} className= "search-div-width" >
+        <div id="a-c" style={{ border: props.downBit ? "2px solid orange" : ""}} className= "search-div-width" >
 
           <select className="form-select" style={{ width: "auto", borderRadius: "5px 0 0 5px" }} value={category} onChange={catHandler} >
             <option value={""}>All</option>
@@ -153,12 +157,13 @@ function Header(props) {
             <option value={"ice-maker"}>Ice Maker</option>
           </select>
 
-          <form onSubmit={goHandler}  className="search-form-width" style={{ zIndex: 1000, display: "flex", height: "37px" }}>
-            <input ref={inpFocus} onFocus={focusHandler} onBlur={blurHandler} className="search-input-width"  defaultValue={key} style={{ color: gray, border: "0", outline: "0" }} type="text" placeholder=" Search.." onChange={(ev) => typeHandler(ev)} />
+          <form onSubmit={goHandler} className="search-form-width" style={{ zIndex: 1000, display: "flex", height: "37px" }}>
+            <input ref={inpFocus} onFocus={chanHandler}  className="search-input-width"  defaultValue={key} style={{ color: gray, border: "0", outline: "0" }} type="text" placeholder=" Search.." onChange={(ev) => typeHandler(ev)} />
             <button style={{ backgroundColor: type ? "lightGreen" : "orange", width: "40px", border: "0", outline: "0", borderRadius: "0 5px 5px 0", }} > <BsSearch /> </button>
           </form>
 
-          <div className={searchModal ? "searchModal" : "searchModalHidden"}>
+
+          <div className={props.downBit ? "searchModal" : "searchModalHidden"} >
             <div id="around">{searchMap}</div>
             {searchMap.length === 0 && <div id="d-g">
              <p>Search in another category</p>
@@ -169,6 +174,8 @@ function Header(props) {
              </div>}
               <a> <CiSearch /> {searchData} </a>
           </div>
+
+
 
         </div>
 
@@ -259,7 +266,7 @@ function Header(props) {
       <div>
       <a href="/cart">
       {data.length > 0 &&  <p className="cart-short">{data.length}</p> }
-      <BsCart3 size={'23px'} color="black" cursor={'pointer'} style={{marginTop:'-2px'}}/>
+      <BsCart3 size={'23px'} color="black" cursor={'pointer'} style={{marginTop:'-5px'}}/>
       </a>
       </div>
 
@@ -269,14 +276,14 @@ function Header(props) {
 </div>
 
 
-<div id="a-c" style={{ border: searchModal ? "2px solid orange" : ""}} className= "search-div-width" >
+<div id="a-c" style={{ border: props.downBit ? "2px solid orange" : ""}} className= "search-div-width" >
 
         <form onSubmit={goHandler}  className="search-form-width" style={{ zIndex: 1000, display: "flex", height: "37px" }}>
-        <input ref={inpFocus} onFocus={focusHandler} onBlur={blurHandler} className="search-input-width"  defaultValue={key} style={{ color: gray, border: "0", outline: "0" }} type="text" placeholder=" Search.." onChange={(ev) => typeHandler(ev)} />
+        <input ref={inpFocus} onFocus={focusHandler} className="search-input-width"  defaultValue={key} style={{ color: gray, border: "0", outline: "0" }} type="text" placeholder=" Search.." onChange={(ev) => typeHandler(ev)} />
         <button style={{ backgroundColor: type ? "lightGreen" : "orange", width: "40px", border: "0", outline: "0", borderRadius: "0 5px 5px 0", }} > <BsSearch /> </button>
         </form>
 
-        <div className={searchModal ? "searchModal-short" : "searchModalHidden"}>
+         <div className={props.downBit ? "searchModal-short" : "searchModalHidden"}>
             <div id="around">{searchMap}</div>
             {searchMap.length === 0 && <div id="d-g">
              <p>Search in another category</p>
@@ -286,7 +293,7 @@ function Header(props) {
              <a href="microwave" id="no-a"><CiSearch /> microwave</a>
              </div>}
               <a> <CiSearch /> {searchData} </a>
-          </div>
+          </div> 
 
 </div>
     </div>

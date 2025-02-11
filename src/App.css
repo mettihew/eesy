@@ -2,9 +2,6 @@
 
 
 
-
-
-
   /* A GOOD GREY COLOR  */
   /* background-color: rgba(232, 230, 227, 0.87); */
 
@@ -13,7 +10,7 @@
 
 
 
-.show {
+/* .show {
   top: 0;
   display: flex;
   align-items: center;
@@ -27,7 +24,7 @@
   position: absolute;
   transition: all 0.4s ease-out;
   z-index: 12;
-}
+} */
 
 * {
   font-family: "Amazon Ember", sans-serif;
@@ -229,11 +226,10 @@ a {
   flex-wrap: wrap;
   justify-content: center;
   background-color: #e3e6e6;
-  /* margin-top: -350px; */
   margin-top: -150px;
 }
 
-.body-box {
+.categories-box {
   /* width: 340px; */
   width: 240px;
   /* height: 400px; */
@@ -246,15 +242,15 @@ a {
   margin: 5px;
 }
 
-.body-box a {
+.categories-box a {
   text-decoration: none;
 }
 
-.body-box h5 {
+.categories-box h5 {
   font-weight: bold;
 }
 
-.body-box img {
+.categories-box img {
   width: 220px;
   height: 220px;
   object-fit: cover;
@@ -271,27 +267,25 @@ a {
 .home-short{
   display: none;
 }
-
+/* 
 .home-category {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding-top: 20px;
   background-color: rgb(236, 236, 236);
-}
+} */
 
-.body-box-small {
+/* .categories-box-small {
   width: 160px;
-  /* width: 50%; */
-  /* height: 190px; */
   display: grid;
   align-items: center;
   justify-content: center;
   margin: 5px;
   background-color: white;
-}
+} */
 
-.body-box-small img {
+/* .categories-box-small img {
   width: 160px;
   height: 160px;
   object-fit: cover;
@@ -300,40 +294,43 @@ a {
   border-radius: 50%;
 }
 
-.body-box-small a {
+.categories-box-small a {
   text-decoration: none;
-  /* margin-left: -5px; */
 }
 
-.body-box-small h6 {
+.categories-box-small h6 {
   font-weight: bold;
-  /* margin-left: -5px; */
-}
+} */
 
 /* /////////////////////////////////////////////////////// */
 
 /* ///////////////////////footer//////// */
 .footer {
   display: flex;
+  flex-wrap: wrap;
   align-items: start;
   justify-content: space-around;
-  flex-wrap: wrap;
   background-color: #232f3e;
   color: white;
 }
 .footer a {
   text-decoration: none;
   color: white;
+  font-size: 12px;
 }
 
 .footer-links {
-  width: 200px;
+  width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
 }
+
+/* .footer-links-div{
+display: flex;
+} */
 
 /* //////////////////////////////// SIGNLE PRODUCT ////////////////////////////////// */
 
@@ -675,8 +672,11 @@ gap: 20px;
   background-color: rgb(0, 175, 0);
 }
 
+/* HTML: <div class="loader"></div> */
+
+
 .loading {
-  height: 100px;
+  height: 10px;
   width: 100%;
   background-image: linear-gradient(
     to right,
@@ -702,6 +702,24 @@ gap: 20px;
     background-position: 450%;
   }
 }
+
+
+  .loading2::after {
+      display: inline-block;
+      animation: dotty steps(1,end) 1s infinite;
+      content: '';
+    }
+    
+    @keyframes dotty {
+        0%   { content: ''; }
+        25%  { content: '.'; }
+        50%  { content: '..'; }
+        75%  { content: '...'; }
+        100% { content: ''; }
+    }
+
+
+  
 
 /* // find2  */
 @media screen and (max-width: 1000px) {
@@ -770,7 +788,6 @@ gap: 20px;
   transition: all 0.5s ease-out;
   z-index: 11;
   position: absolute;
-  /* background-color: red; */
 }
 
 .searchModal-short {
@@ -784,14 +801,10 @@ gap: 20px;
   transition: all 0.5s ease-out;
   z-index: 11;
   position: absolute;
-  /* background-color: red; */
 }
 
 .searchModalHidden {
   display: none;
-  /* transition: all 0.5s ease-out; */
-  /* color: transparent; */
-  /* position: absolute; */
 }
 
 .cart-img {
@@ -923,6 +936,8 @@ gap: 20px;
 }
 .home-products img {
   width: 100%;
+  height: 150px;
+  object-fit: contain;
 }
 
 /* /////////////////// I THINK IT'S SINGLE PRODUCT  */
@@ -952,8 +967,17 @@ gap: 20px;
   /* padding: 0 10px; */
 }
 
+
+  .special-img{
+    width: 80%;
+  }
+
 /* phone cellphone android small */
 @media screen and (max-width: 650px) {
+
+  .special-img{
+    width: 95%;
+  }
 
   .signin-by-email-and-password {
     border-right: none;
@@ -978,12 +1002,13 @@ gap: 20px;
 
   .title-img{
     width: 100%;
-    max-width: 300px;
+    max-width: 200px;
     /* max-height: 300px; */
     /* object-fit: cover; */
     border-radius: 0;
     /* border-radius: 10px; */
   }
+
 
   .home111 {
     justify-content: center;
@@ -1019,10 +1044,10 @@ gap: 20px;
   }
 
   .others-img {
-    width: 70px;
-    height: 70px;
-    border-radius: 0px;
-    margin: 5px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin: 3px;
   }
 
 .others-img-div{

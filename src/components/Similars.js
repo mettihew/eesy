@@ -10,9 +10,11 @@ const history = JSON.parse(localStorage.getItem('history'))
     if(history){
       axios
       .post(`${URL}/get-history`, { history })
-      .then((res) => setHistory(res.data));
+      .then((res) => setHistory(res.data))
+      .catch((err) => console.log(err.request.response))
     }
     }, [])
+
   return (
     <>
       {history && (

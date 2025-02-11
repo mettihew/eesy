@@ -4,67 +4,50 @@ import {
   BsYoutube,
   BsInstagram,
   BsGithub,
-  BsSend,
 } from "react-icons/bs";
-import { Button } from "@mui/material";
 
 function Footer() {
-
-const emailHandler = (ev) => {
-  console.log('oh shit', ev.target);
-}
-
   return (
-// Contact + information + Account + Quick 
-    <footer className="footer pt-5">
+    // Contact + information + Account + Quick
+    <footer className="footer pt-">
 
-        <div className="footer-links">
-          <h4>Contact Us</h4>
-          <p> mettihew@gmail.com</p>
-          <div id="around" style={{width: '70%'}}>
-            <BsGithub className="fs-4" />
-            <BsLinkedin className="fs-4" />
-            <BsInstagram className="fs-4" />
-            <BsYoutube className="fs-4" />
-          </div>
-           {/* Stay in contac + EMAIL  */}
-           <div id="d-f" className="py-1">
-            {/* <input className="form-control" placeholder="Stay in contact" />
-            <Button variant="contained" size="small" color="info" onClick={(ev) => emailHandler(ev)}>
-              Email <BsSend  />
-            </Button> */}
+      <div className="footer-links">
+        <h6>Contact Us</h6>
+        <div id="around" style={{ width: "70%" }}>
+          <BsGithub />
+          <BsLinkedin />
+          <BsInstagram />
+          <BsYoutube />
         </div>
-        </div>
+        <a> mettihew@gmail.com</a>
+        <a> Powered by Mettihew </a>
+        <a>&copy;{new Date().getFullYear()}</a>
+      </div>
 
-        <div className="footer-links">
-          <h4>Information</h4>
-          <a href="/contact"> Returned Policy </a>
-          <a href="/contact"> Privacy Policy </a>
-          <a href="/contact"> Shipping Policy </a>
-          <a href="/contact"> Terms & Conditions </a>
-          {/* <a href="/contact"> Blogs </a> */}
-        </div>
+      <div className="footer-links">
+        <h6>Information</h6>
+        <a href="/contact"> Returned Policy </a>
+        <a href="/contact"> Privacy Policy </a>
+        <a href="/contact"> Shipping Policy </a>
+        <a href="/contact"> Terms & Conditions </a>
+      </div>
 
-        <div className="footer-links">
-          <h4>Account</h4>
-          <a href="/contact">About Us</a>
-          <a href="/contact">Contact</a>
-          <a href="/contact">Call</a>
-        </div>
+      <div className="footer-links">
+        <h6>Account</h6>
+        <a href="/contact">About Us</a>
+        <a href="/contact">Contact</a>
+        <a href="/contact">Call & information</a>
+      </div>
 
-        <div className="footer-links">
-          <h4>Quick Links</h4>
-          <a href="/compare-product"> Compare Products </a>
-          <a href="/favorite"> Favorite List </a>
-          <a href="/login"> Sign In </a>
-          <a href="/cart"> Cart </a>
-        </div>
+      <div className="footer-links">
+        <h6>Quick Links</h6>
+        <a href="/favorite"> Favorite List </a>
+        <a href="/cart"> Cart </a>
+        <a href="/login"> Sign In </a>
+        <a href="/compare-product"> Compare Products </a>
+      </div>
 
-        {/* DON'T DELETE container!!! */}
-        <p className="container text-center" style={{marginBottom:'0px'}}> &copy; 2019 - {new Date().getFullYear()}; Powered by Mettihew </p>
-
-      </footer>
-
+    </footer>
   );
 }
 
