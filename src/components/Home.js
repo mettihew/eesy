@@ -194,7 +194,7 @@ function Home() {
     <div className="d-flex flex-wrap">
       {microwave?.map((ev) => (
         <div key={ev._id} className="home-products">
-        <a  href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
+        <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
         <p>{ev.name}</p>
         </div>
       ))}

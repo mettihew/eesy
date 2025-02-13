@@ -2,33 +2,16 @@
 
 
 
+
+
+
+
   /* A GOOD GREY COLOR  */
   /* background-color: rgba(232, 230, 227, 0.87); */
 
 
-
-
-
-
-/* .show {
-  top: 0;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  transition: all 0.2s ease-out;
-  z-index: 12;
-}
-
-.hide {
-  top: -100px;
-  position: absolute;
-  transition: all 0.4s ease-out;
-  z-index: 12;
-} */
-
 * {
   font-family: "Amazon Ember", sans-serif;
-  /* background-color: #232f3e; amazon color  */
 }
 
 #d-f {
@@ -317,6 +300,7 @@ a {
   text-decoration: none;
   color: white;
   font-size: 12px;
+  margin-top: -4px;
 }
 
 .footer-links {
@@ -326,6 +310,7 @@ a {
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 /* .footer-links-div{
@@ -352,16 +337,22 @@ display: flex;
   justify-content: space-around;
 }
 
-.title-img{
+/* .title-img{
   width: 300px;
   border-radius: 10px;
-}
+} */
 
 .single-images {
   display: flex;
   text-align: center;
   justify-content: space-around;
   direction: rtl;
+}
+
+.others-img-div{
+  width: 100%;
+  display: grid;
+  justify-content: space-around;
 }
 
 .others-img {
@@ -372,10 +363,6 @@ display: flex;
   margin: 10px;
 }
 
-.others-img-div{
-  display: grid;
-  justify-content: space-around;
-}
 
 
 .single-product-text-align {
@@ -391,7 +378,7 @@ display: flex;
   border-radius: 50%;
 }
 
-/* ////////ends of meain */
+/* //////////////////////////*/
 
 .add-to-cart-button {
   padding: 5px 10px;
@@ -936,7 +923,7 @@ gap: 20px;
 }
 .home-products img {
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: contain;
 }
 
@@ -996,18 +983,29 @@ gap: 20px;
  } 
  
   .single-images{
+    width: 100%;
     display: grid;
     text-align: center;
   }
 
   .title-img{
     width: 100%;
-    max-width: 200px;
-    /* max-height: 300px; */
-    /* object-fit: cover; */
+    max-height: 400px;
+    object-fit: contain;
     border-radius: 0;
-    /* border-radius: 10px; */
   }
+
+.others-img-div{
+  width: 100%;
+  display: flex;
+}
+
+.others-img {
+  width: 55px;
+  width: 100%;
+  border-radius: 5px;
+  padding: 3px;
+}
 
 
   .home111 {
@@ -1042,17 +1040,6 @@ gap: 20px;
   .single {
     display: grid;
   }
-
-  .others-img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    margin: 3px;
-  }
-
-.others-img-div{
-  display: flex;
-}
 
 
   .search-div-width {

@@ -25,6 +25,7 @@ import YourOrders from "./pages/YourOrders"
 
 function App() {
  
+  // I COME FROM HEADER - A BLACK MODAL ON WHOLE WEBSITE WHEN THE USER CLICKS ON SEARCH INPUT.
     const [modal, setModal] = useState(false);
     const [ross, setRoss] = useState(false);
 

@@ -14,12 +14,12 @@ function Footer() {
       <div className="footer-links">
         <h6>Contact Us</h6>
         <div id="around" style={{ width: "70%" }}>
-          <BsGithub />
-          <BsLinkedin />
-          <BsInstagram />
-          <BsYoutube />
+         <a> <BsGithub /> </a>
+         <a> <BsLinkedin /> </a>
+         <a> <BsInstagram /> </a>
+         <a> <BsYoutube /> </a>
         </div>
-        <a> mettihew@gmail.com</a>
+        <a> Mettihew@gmail.com</a>
         <a> Powered by Mettihew </a>
         <a>&copy;{new Date().getFullYear()}</a>
       </div>

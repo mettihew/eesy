@@ -116,7 +116,7 @@ function Header(props) {
             src={ev.images.title}
             width={"70px"}
             height={"70px"}
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "contain" }}
           />
           <p style={{ width: "70px", height: "60px", overflow: "hidden" }}>
             {ev.name}

@@ -16,6 +16,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Similar } from "../components/Similars";
 
 function SingleProduct() {
+  const [reRender, setReRender] = useState()
   const [colorDiv, setColorDiv] = useState()
   const [showMore, setShowMore] = useState(false)
   const [colorErr, setColorErr] = useState(false)
@@ -42,7 +43,6 @@ function SingleProduct() {
      axios.get(`${URL}/product/${pId}`)
     .then(res => {
       setData(res.data)
-      setColorDiv(res.data.color[0])
     })
     .catch(err => alert(err.request.response))
 
@@ -56,9 +56,10 @@ function SingleProduct() {
       setInCart(cart)
     }
 
-//  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+// fffffffffffffffffffffffffff  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
     const cartL = JSON.parse(localStorage.getItem('cart'))
+    
     if(cartL){
       let idArr = []
        cartL.find(ev => {
@@ -66,16 +67,25 @@ function SingleProduct() {
            idArr.push(ev)
           }
         })
-
       idArr.find(ev => {
-if(colorDiv === ev.color){
-  setInCartLocal(ev)
-}})
-if(idArr.length > 1){
-  setInCartLocal(idArr[0])
-}else{
-  setInCartLocal(idArr)
-}
+        if(colorDiv === ev.color){
+        // console.log('touch 1 color', 'colorDiv=', colorDiv, 'ev.color=', ev.color);
+        setInCartLocal(ev)
+        return
+      }
+      if(idArr.length > 1){
+        // console.log('touch 2 > 1');
+        setInCartLocal(idArr[0])
+        setColorDiv(idArr[0].color)
+        return
+      }
+      if(idArr.length === 1){
+        // console.log('touch 3 > else');
+        setInCartLocal(idArr[0])
+        setColorDiv(idArr[0].color)
+        return
+      }
+    })
 }}
 
     // MAKING HISTORY JUST IN BROWSER LOCALSTORAGE WITHOUT LOGIN
@@ -91,37 +101,46 @@ if(!history){
 }
   }, [data]) // "data" is important for getting suggestions
   if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>  
+/////////////////////////////////////////////uuuuuuuuuuuuuuuuuuuuuuuseEffect
+
+// useEffect(() => {
+  //  console.log('just to check useEffect second');
+// }, [colorDiv])
 
 
 
-
-
-
-console.log('incartlocal', inCartLocal);
-
-
-
-const colorHandler = (ev) => {
-  setColorDiv(ev)
+const colorHandler = (eve) => {
+  setColorDiv(eve)
 
   const cartL = JSON.parse(localStorage.getItem('cart'))
+
   if(cartL){
-    let idArr = []
-     cartL.find(ev => {
-       if(ev.pId === pId){
-         idArr.push(ev)
+      let idArr = []
+
+        cartL.find(ev => {
+          if(ev.pId === pId && eve === ev.color){
+            idArr.push(ev)
+          }else{
+          return setInCartLocal(null)
+          }
+        })
+        // THE BELOW PART MAKES THE ABOVE PART WORKS PROPERLY - BUT I THINK IT'S NOT NESSESERLY AND YOU CAN
+        // REMOVE IT IF YOU COME UP WITH A BETTER CODE FOR THE ABOVE SECTION.
+      idArr.find(ev => {
+        if(eve === ev.color){
+          return setInCartLocal(ev)
         }
+        if(eve !== ev.color){
+          return setInCartLocal(null)
+        }
+          console.log(inCartLocal, 'in');
       })
+    }
+  }
 
-    idArr.find(ev => {
-if(colorDiv === ev.color){
-setInCartLocal(ev)
-}else{
-  setInCartLocal(null)
-}
-})}
-}
 
+
+console.log(inCartLocal, 'out');
 
 
   const addHandler = (ev) => {
@@ -136,7 +155,9 @@ setInCartLocal(ev)
     setColorDiv("")
   }
 
-  const addHandlerLocalStorage = (ev) => {
+  ////////////////////////////////////////////////////adddddddddddddddddddddddddddddddddddddd
+  const addHandlerLocal = (ev) => {
+    if(!colorDiv) return setColorErr("Select color first from add handler local")
     const cart = JSON.parse(localStorage.getItem('cart'))
     if(cart){
       cart.map(ev => {
@@ -154,6 +175,8 @@ setInCartLocal(ev)
       localStorage.setItem('cart', JSON.stringify(cart))
     }
     // setColorDiv(null)
+    // setReRender(Math.random())
+    window.location.reload()
   }
 
   const increaseHandler = () => {
@@ -178,21 +201,6 @@ setInCartLocal(ev)
       setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 })
       setLoadingAdd(false)
 }
-    // if (!colorDiv) return setColorErr(true)
-      // setColorDiv(ev)
-      // const cart = JSON.parse(localStorage.getItem('cart'))
-
-    // axios.post(`${URL}/increase-cart`, { pId: data._id, uId: user._id, qty: inCart.qty + 1, color: inCart.color })
-    // .then(res => {
-    //   localStorage.setItem('user', JSON.stringify(res.data))
-    //   const cart = res.data.cart.find(ev => {
-    //     return ev.pId === pId
-    //   })
-    //   setInCart(cart)
-    //   setLoadingAdd(false)
-    // })
-    // .catch((err) => alert(err.request.response))
-  // }
 
   const decreaseHandler = () => {
     setLoadingAdd(true)
@@ -211,18 +219,11 @@ setInCartLocal(ev)
 
   const decreaseHandlerLocal = () => {
     setLoadingAdd(true)
-    // setColorErr(false)
-    // axios.post(`${URL}/remove-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
-    // .then(res => {
-    //   localStorage.setItem('user', JSON.stringify(res.data))
-    //   const cart = res.data.cart.find(ev => {
-    //     return ev.pId === pId
-    //   })
-    //   setInCart(cart)
-    //   setLoadingAdd(false)
-    // })
-    // .catch((err) => alert(err.request.response))
-  }
+    const cart = [{ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty - 1 }]
+    localStorage.setItem('cart', JSON.stringify(cart))
+      setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty - 1 })
+      setLoadingAdd(false)
+}
 
   const handleFavorite = () => {
     setLoadingFav(true)
@@ -305,14 +306,14 @@ setInCartLocal(ev)
 
           {/* --------------------------------------------------------HERE WE HAVE TWO PARTS - PART1: IMAGES IN THE LEFT - PART2: PRODUCT DETAILS AND ADD TO CART IN THE RIGHT  */}
           {/*------------ PART1 OF LINE1 - SMALL AND BIG IMAGES */}
-          <div className="single-images" >
+           <div className="single-images" >
               <Zoom><img alt="title" src={data.images.title} className="title-img" /></Zoom>
             <div className="others-img-div">
               {data.images.others.map((ev, i) => (
                  <Zoom key={i}><img alt="others" src={ev} className="others-img"/></Zoom> 
               ))} 
             </div>
-          </div>
+           </div> 
 
 
           {/* ------------- PART2 OF LINE1 - PRODUCT DETAILS AND ADD TO CART(OR LOGIN) */}
@@ -422,26 +423,26 @@ setInCartLocal(ev)
           :
               // NOT LOGGED IN - ADD TO LOCALSTORAGE CART
 
+<>
 
 
+{(!colorDiv) && !colorErr && <p>Select color to order</p>}
+{/* {(!colorDiv) && !colorErr && <div id="d-f"><p>Color: White</p><p>price: 10</p></div>} */}
+{colorErr && !colorDiv && <p className="text-danger text-center">Select color first</p>}
+{(colorDiv) && (!inCartLocal) && <p className="text-success">You are ready to Order</p>}
 
 <div className="btn bottom-0 w-100 text-center border border-warning rounded-5">
-{/* {(!colorDiv) && !colorErr && <p>Select color to order</p>} */}
-{/* {(!colorDiv) && !colorErr && <div id="d-f"><p>Color: White</p><p>price: 10</p></div>} */}
-{/* {colorErr && !colorDiv && <p className="text-danger text-center">Select color first</p>} */}
-{/* {(colorDiv) && <p className="text-success">You are ready to Order</p>} */}
 {/* {console.log(inCartLocal.color, colorDiv)} */}
 {/* {(inCartLocal, inCartLocal.color === colorDiv) ?  */}
 {(inCartLocal) ? 
 <div id="between" >
-  {console.log('incart color:',inCartLocal.color,'colorDiv', colorDiv)}
   ${data.price}
 <ButtonGroup>
 <Button aria-label="reduce" onClick={() =>  decreaseHandlerLocal() }><RemoveIcon fontSize="small" /></Button>
 {loadingAdd ? <h1>...</h1> : 
 <>
 <div className="btn w-100 border " >
-{/* //////// jjjjjjjjjjjjj  */}
+{/* //////// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadd to cart */}
 {inCartLocal.qty} 
 </div>
 </>
@@ -451,11 +452,14 @@ setInCartLocal(ev)
  {inCartLocal ? inCartLocal.color : colorDiv}
 </div>
 : 
-<button onClick={addHandlerLocalStorage} type="submit" className="btn w-100 h-100" >
+<button onClick={addHandlerLocal} type="submit" className="btn w-100 h-100" >
 Add to Cart  <FaCartShopping /> 
 </button>
 }
 </div>
+
+
+</>
 
 
 
