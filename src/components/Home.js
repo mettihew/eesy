@@ -52,7 +52,7 @@ function Home() {
 
 
   return (
-<div className="container-fluid">
+<div>
   {/* BIG BANNER  */}
   <img src={digi_banner} className="body-banner rounded-3 py-2 " alt="main banner" />
 
@@ -83,7 +83,7 @@ function Home() {
   <div className="home222">
     <a href="/category?cat=refrigerator">Refrigerators</a>
     <a href="/category?cat=dishwasher">Dishwashers</a>
-    <a href="/category?cat=ice-maker">Ice-makers</a>
+    <a href="/category?cat=ice-maker">IceMakers</a>
     <a href="/category?cat=microwave">Microwaves</a>
   </div>
 
@@ -91,7 +91,7 @@ function Home() {
   <div className="start-now">
     <h3>Shopping made easy</h3>
     <p>Enjoy reliability, secure deliveries and hassle-free returns.</p>
-    <button className="start-now-butt" ><a href={`/products`} id="no-a"> Start now </a>  </button>
+    <button className="start-now-butt" ><a href={`/products`} className="text-decoration-none text-white"> Start now </a>  </button>
   </div>
 
 
@@ -110,14 +110,9 @@ function Home() {
 
 
 <div className="home-short mt-5">
-  <>
   <h5 style={{fontFamily:'serif', fontWeight:'bold', margin: '25px'}}>Women and fashion</h5>
-  {/* <p style={{marginBottom:'0px'}}>Women & fashion</p> */}
   <img style={{marginLeft:'4px'}} width={"97%"} src={fashion_girl_1} />
-  {/* <img style={{marginLeft:'4px'}} width={"97%"} src="https://img.freepik.com/premium-photo/fashion-portrait-playful-beautiful-woman-bright-modern-background-with-chic-lifestyle-elements_171965-72485.jpg" alt="fashion-smile" /> */}
-  </>
-  {/* <button className="start-now-butt m-3 p-1">Start now</button> */}
-  <button className="start-now-butt m-3 p-1" ><a href={`/clothes`} id="no-a"> Start now </a>  </button>
+  <button className="start-now-butt m-3 p-1" ><a href={`/clothes`} className="text-decoration-none text-white"> Start now </a>  </button>
 </div>
 
 
@@ -190,31 +185,32 @@ function Home() {
 
  {microwave &&
 <>
-  <h5 className="mt-4">Microwaves</h5>
-    <div className="d-flex flex-wrap">
+  <h5 className="mt-4 mb-0 px-4 border-top color-secondary">Microwaves</h5>
+    <div className="d-flex flex-wrap mb-0">
       {microwave?.map((ev) => (
-        <div key={ev._id} className="home-products">
+        <div key={ev._id} className="home-products mb-0">
         <a href={`/product/${ev._id}`}><img src={ev.images.title} alt="title" /></a>
-        <p>{ev.name}</p>
+        {/* <p>{ev.name}</p> */}
         </div>
       ))}
+    {/* <p className="test">M</p> */}
     </div>
 </>
 } 
 
-<History text={<h5>You may interested</h5>}/>
+<History text={<h5 className="border-top color-secondary px-4 pt- ">You may interested</h5>} nameOff={true}/>
 
 
       <section className="gray py-4">
       <div className="brands-img">
-    <img src={brand1} width={"90px"} />
-    <img src={brand2} width={"90px"} />
+    <img src={brand8} width={"90px"} />
+    <img src={brand7} width={"90px"} />
     <img src={brand3} width={"90px"} />
     <img src={brand4} width={"90px"} />
+    <img src={brand1} width={"90px"} />
+    <img src={brand2} width={"90px"} />
     <img src={brand5} width={"90px"} />
     <img src={brand6} width={"90px"} />
-    <img src={brand7} width={"90px"} />
-    <img src={brand8} width={"90px"} />
     </div>
       </section>
 

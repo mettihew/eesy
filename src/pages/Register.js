@@ -3,11 +3,11 @@ import { useFormik } from "formik";
 import { useState } from "react";
 import * as yup from "yup";
 import axios from "axios";
-import loading from "../images/loading.gif";
+import { URL } from "../utils/URL";
 
 function SignUp() {
-  const [Spin, setSpin] = useState(false);
-
+  const [loader, setLoader] = useState(false)
+  
   const schema = yup.object({
     name: yup.string().required("your name"),
     email: yup.string().required("email address"),
@@ -22,17 +22,23 @@ function SignUp() {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      setSpin(true);
+      setLoader(true)
       axios
         .post(`${URL}/register`, values)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
           window.location.href = "/account";
         })
-        .catch((err) => alert(err.request.response));
-      setSpin(false);
+        .catch((err) => 
+          {alert(err.request.response)
+            setLoader(false)
+    })
     },
   });
+
+  const user = JSON.parse(localStorage.getItem('user'))
+  if(user) return window.location.assign("/account")
+
 
   // dispatch(createUser(values));
   // dispatch(createUser({ name: name, password: pass, email: email }));
@@ -82,7 +88,7 @@ function SignUp() {
             type="password"
           />
 
-          <Button onClick={formik.handleSubmit}>Submit</Button>
+          <Button onClick={formik.handleSubmit}>{loader ? <p className="loading2 p-0 m-0" /> : 'Submit'}</Button>
 
           {/* {Spin ? <img src={loading} width={"50px"} /> : <button id='button' type='submit'><p>Register</p> </button> } */}
 

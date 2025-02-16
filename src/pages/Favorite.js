@@ -23,7 +23,8 @@ function Favorite() {
       <div id="d-f">
 
       {/* {productState &&  */}
-      <div className="products-items" >
+      <div className="w-100 d-flex flex-column align-items-center " >
+        <h5>Your favorite products</h5>
         {productState?.map((ev) => {
           return (
             <a href={`/product/${ev._id}`} key={ev._id}>

@@ -6,8 +6,10 @@ import axios  from 'axios'
 import * as jwt_decode from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useState } from "react";
 
 function Login() {
+  const [loader, setLoader] = useState(false)
 
   const schema = yup.object({
     email: yup.string().required("Email is required"),
@@ -21,11 +23,29 @@ function Login() {
     },
     validationSchema: schema,
     onSubmit: (v) => {
+      setLoader(true)
       axios.post(`${URL}/login`, v)
       .then((res) => {
+        // ADD USER TO LOCALSTORAGE TO HAVE SOME DATA ABOUT THEM
+        // IF USER HAD PRODUCTS BEFORE LOGIN - ADD THEM TO UESR CARTD AND DELETE THEM FROM LOCALSTORAGE
+        const cartLocal = JSON.parse(localStorage.getItem('cart'))
+        if(cartLocal){
+          localStorage.removeItem('cart')
+          axios.post(`${URL}/add-local-to-cart`, { uId: res.data._id, cartLocal: cartLocal[0] })
+          .then(res => {
+            localStorage.setItem('user', JSON.stringify(res.data))
+            window.location.reload()
+          })
+        }
+        else{
           localStorage.setItem('user', JSON.stringify(res.data))
-          window.location.reload()} )
-      .catch((err) => alert(err.request.response))
+          window.location.reload()
+        }
+      })
+        .catch((err) => 
+          {alert(err.request.response)
+            setLoader(false)
+    })
     }
   })
 
@@ -53,7 +73,8 @@ function Login() {
   <input type="email" placeholder="Email" onChange={formik.handleChange('email')} value={formik.values.email} name="email"/>
   <div className="text-danger">{formik.errors.password}</div>
   <input type="password" placeholder="Password" onChange={formik.handleChange('password')} value={formik.values.password} name="password"/>
-  <Button onClick={formik.handleSubmit}>Continue</Button>
+  
+  <Button onClick={formik.handleSubmit}>{loader ? <p className="loading2 p-0 m-0" /> : 'Continue'}</Button>
 </div>
 
 <div className="google">

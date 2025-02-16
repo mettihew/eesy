@@ -22,7 +22,6 @@ function SingleProduct() {
   const [colorErr, setColorErr] = useState(false)
   const location = useLocation()
   const pId = location.pathname.split("/")[2]
-  // const [similar, setSimilar] = useState()
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingFav, setLoadingFav] = useState(false)
   const [loadingCom, setLoadingCom] = useState(false)
@@ -49,38 +48,52 @@ function SingleProduct() {
 
     // IS THE PRODUCT IN MY CART?
     const user = JSON.parse(localStorage.getItem('user'))
-    if(user){
-      const cart = user.cart.find(ev => {
-        return ev.pId === pId
-      })
-      setInCart(cart)
-    }
-
-// fffffffffffffffffffffffffff  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
-
-    const cartL = JSON.parse(localStorage.getItem('cart'))
-    
-    if(cartL){
-      let idArr = []
-       cartL.find(ev => {
+      if(user){
+        let idArr = []
+        user.cart.find(ev => {
          if(ev.pId === pId){
            idArr.push(ev)
           }
         })
       idArr.find(ev => {
         if(colorDiv === ev.color){
-        // console.log('touch 1 color', 'colorDiv=', colorDiv, 'ev.color=', ev.color);
+        setInCart(ev)
+        return
+      }
+      if(idArr.length > 1){
+        setInCart(idArr[0])
+        setColorDiv(idArr[0].color)
+        return
+      }
+      if(idArr.length === 1){
+        setInCart(idArr[0])
+        setColorDiv(idArr[0].color)
+        return
+      }
+    })
+}
+
+// fffffffffffffffffffffffffff  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+    const cartLocal = JSON.parse(localStorage.getItem('cart'))
+    if(cartLocal){
+      let idArr = []
+       cartLocal.find(ev => {
+         if(ev.pId === pId){
+           idArr.push(ev)
+          }
+        })
+      idArr.find(ev => {
+        if(colorDiv === ev.color){
         setInCartLocal(ev)
         return
       }
       if(idArr.length > 1){
-        // console.log('touch 2 > 1');
         setInCartLocal(idArr[0])
         setColorDiv(idArr[0].color)
         return
       }
       if(idArr.length === 1){
-        // console.log('touch 3 > else');
         setInCartLocal(idArr[0])
         setColorDiv(idArr[0].color)
         return
@@ -103,61 +116,86 @@ if(!history){
   if (!data) return <div id="j-c"> <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHN0eWxlPSItLWFuaW1hdGlvbi1zdGF0ZTogcnVubmluZzsiPgogICAgICA8c3R5bGU+CiAgICAgICAgOnJvb3QgewogICAgICAgICAgLS1hbmltYXRpb24tc3RhdGU6IHBhdXNlZDsKICAgICAgICB9CgogICAgICAgIC8qIHVzZXIgcGlja2VkIGEgdGhlbWUgd2hlcmUgdGhlICJyZWd1bGFyIiBzY2hlbWUgaXMgZGFyayAqLwogICAgICAgIDpyb290IHsKICAgICAgICAgIC0tcHJpbWFyeTogI2Y5ZmJmYTsKICAgICAgICAgIC0tc2Vjb25kYXJ5OiAjMDAxZTJiOwogICAgICAgICAgLS10ZXJ0aWFyeTogIzAwZWQ2NDsKICAgICAgICAgIC0taGlnaGxpZ2h0OiAjMDAxZTJiOwogICAgICAgICAgLS1zdWNjZXNzOiAjMDBlZDY0OwogICAgICAgIH0KCiAgICAgICAgLyogdGhlc2Ugc3R5bGVzIG5lZWQgdG8gbGl2ZSBoZXJlIGJlY2F1c2UgdGhlIFNWRyBoYXMgYSBkaWZmZXJlbnQgc2NvcGUgKi8KICAgICAgICAuZG90cyB7CiAgICAgICAgICBhbmltYXRpb24tbmFtZTogbG9hZGVyOwogICAgICAgICAgYW5pbWF0aW9uLXRpbWluZy1mdW5jdGlvbjogZWFzZS1pbi1vdXQ7CiAgICAgICAgICBhbmltYXRpb24tZHVyYXRpb246IDNzOwogICAgICAgICAgYW5pbWF0aW9uLWl0ZXJhdGlvbi1jb3VudDogaW5maW5pdGU7CiAgICAgICAgICBhbmltYXRpb24tcGxheS1zdGF0ZTogdmFyKC0tYW5pbWF0aW9uLXN0YXRlKTsKICAgICAgICAgIHN0cm9rZTogI2ZmZjsKICAgICAgICAgIHN0cm9rZS13aWR0aDogMC41cHg7CiAgICAgICAgICB0cmFuc2Zvcm0tb3JpZ2luOiBjZW50ZXI7CiAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgcjogbWF4KDF2dywgMTFweCk7CiAgICAgICAgICBjeTogNTAlOwogICAgICAgICAgZmlsdGVyOiBzYXR1cmF0ZSgyKSBvcGFjaXR5KDAuODUpOwogICAgICAgICAgZmlsbDogdmFyKC0tdGVydGlhcnkpOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDIpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC4xNXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoMykgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjNzOwogICAgICAgIH0KCiAgICAgICAgLmRvdHM6bnRoLWNoaWxkKDQpIHsKICAgICAgICAgIGFuaW1hdGlvbi1kZWxheTogMC40NXM7CiAgICAgICAgfQoKICAgICAgICAuZG90czpudGgtY2hpbGQoNSkgewogICAgICAgICAgYW5pbWF0aW9uLWRlbGF5OiAwLjZzOwogICAgICAgIH0KCiAgICAgICAgQGtleWZyYW1lcyBsb2FkZXIgewogICAgICAgICAgMCUgewogICAgICAgICAgICBvcGFjaXR5OiAwOwogICAgICAgICAgICB0cmFuc2Zvcm06IHNjYWxlKDEpOwogICAgICAgICAgfQogICAgICAgICAgNDUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgNjUlIHsKICAgICAgICAgICAgb3BhY2l0eTogMTsKICAgICAgICAgICAgdHJhbnNmb3JtOiBzY2FsZSgwLjcpOwogICAgICAgICAgfQogICAgICAgICAgMTAwJSB7CiAgICAgICAgICAgIG9wYWNpdHk6IDA7CiAgICAgICAgICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7CiAgICAgICAgICB9CiAgICAgICAgfQogICAgICA8L3N0eWxlPgoKICAgICAgPGcgY2xhc3M9ImNvbnRhaW5lciI+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjMwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNDB2dyIvPgogICAgICAgIDxjaXJjbGUgY2xhc3M9ImRvdHMiIGN4PSI1MHZ3Ii8+CiAgICAgICAgPGNpcmNsZSBjbGFzcz0iZG90cyIgY3g9IjYwdnciLz4KICAgICAgICA8Y2lyY2xlIGNsYXNzPSJkb3RzIiBjeD0iNzB2dyIvPgogICAgICA8L2c+CiAgICA8L3N2Zz4=" alt="loading" /> </div>  
 /////////////////////////////////////////////uuuuuuuuuuuuuuuuuuuuuuuseEffect
 
-// useEffect(() => {
-  //  console.log('just to check useEffect second');
-// }, [colorDiv])
-
-
-
 const colorHandler = (eve) => {
   setColorDiv(eve)
 
-  const cartL = JSON.parse(localStorage.getItem('cart'))
+  const user = JSON.parse(localStorage.getItem('user'))
+  if(user.cart.length > 0){
+    let idArr = []
 
-  if(cartL){
-      let idArr = []
+     user.cart.find(ev => {
+        if(ev.pId === pId && eve === ev.color){
 
-        cartL.find(ev => {
-          if(ev.pId === pId && eve === ev.color){
-            idArr.push(ev)
-          }else{
-          return setInCartLocal(null)
-          }
-        })
-        // THE BELOW PART MAKES THE ABOVE PART WORKS PROPERLY - BUT I THINK IT'S NOT NESSESERLY AND YOU CAN
-        // REMOVE IT IF YOU COME UP WITH A BETTER CODE FOR THE ABOVE SECTION.
-      idArr.find(ev => {
-        if(eve === ev.color){
-          return setInCartLocal(ev)
+          idArr.push(ev)
+          console.log(ev);
+          
+        }else{
+          return setInCart(null)
         }
-        if(eve !== ev.color){
-          return setInCartLocal(null)
-        }
-          console.log(inCartLocal, 'in');
-      })
-    }
+        setInCart(ev)
+        setColorDiv(ev.color)
+      // }
+    })
+
+    idArr.find(ev => {
+      if(eve === ev.color){
+        return setInCart(ev)
+      }
+      if(eve !== ev.color){
+        return setInCart(null)
+      }
+    })
+
+
   }
 
 
+}
 
-console.log(inCartLocal, 'out');
 
+  const colorHandlerLocal = (eve) => {
+    setColorDiv(eve)
+  
+    const cartLocal = JSON.parse(localStorage.getItem('cart'))
+  
+    if(cartLocal){
+        let idArr = []
+  
+          cartLocal.find(ev => {
+            if(ev.pId === pId && eve === ev.color){
+              idArr.push(ev)
+            }else{
+            return setInCartLocal(null)
+            }
+          })
+          // THE BELOW PART MAKES THE ABOVE PART WORKS PROPERLY - BUT I THINK IT'S NOT NESSESERLY AND YOU CAN
+          // REMOVE IT IF YOU COME UP WITH A BETTER CODE FOR THE ABOVE SECTION.
+        idArr.find(ev => {
+          if(eve === ev.color){
+            return setInCartLocal(ev)
+          }
+          if(eve !== ev.color){
+            return setInCartLocal(null)
+          }
+        })
+      }
+    }
 
   const addHandler = (ev) => {
-    // if (!colorDiv) return setColorErr(true)
-    // setColorDiv(ev)
+    if(!colorDiv) return setColorErr("Select color first from add handler local")
+    setLoadingAdd(true)
     axios.post(`${URL}/add-to-cart`, { pId: data._id, uId: user._id, color: colorDiv })
     .then(res => {
       localStorage.setItem('user', JSON.stringify(res.data))
       window.location.reload()
     })
     .catch((err) => alert(err.request.response))
-    setColorDiv("")
   }
 
   ////////////////////////////////////////////////////adddddddddddddddddddddddddddddddddddddd
   const addHandlerLocal = (ev) => {
     if(!colorDiv) return setColorErr("Select color first from add handler local")
+      setLoadingAdd(true)
     const cart = JSON.parse(localStorage.getItem('cart'))
     if(cart){
       cart.map(ev => {
@@ -174,8 +212,6 @@ console.log(inCartLocal, 'out');
       const cart = [{ pId: data._id, color: colorDiv, qty: 1 }]
       localStorage.setItem('cart', JSON.stringify(cart))
     }
-    // setColorDiv(null)
-    // setReRender(Math.random())
     window.location.reload()
   }
 
@@ -197,7 +233,19 @@ console.log(inCartLocal, 'out');
   const increaseHandlerLocal = () => {
     setLoadingAdd(true)
     const cart = [{ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 }]
-    localStorage.setItem('cart', JSON.stringify(cart))
+    //HERE
+    //HERE
+    //HERE
+    //HERE
+    //HERE
+    //HERE
+    //HERE
+    // YOU HAVE TO SAY IF CARTLOCAL IS EMPTY THE BELOW SETITEM 
+    // localStorage.setItem('cart', JSON.stringify(cart))
+    // ELSE 
+    // PUSH TO OTHER ITEMS AND THEN SET TO LOCALSTORAGE
+    
+      localStorage.setItem('cart', JSON.stringify(cart))
       setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 })
       setLoadingAdd(false)
 }
@@ -346,7 +394,11 @@ console.log(inCartLocal, 'out');
             <div id="d-f" className="gap-30">
                           {data.color.map((ev, i) => (
                           <div key={i}>
+                            {user?
                             <div onClick={() => colorHandler(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
+                            :
+                            <div onClick={() => colorHandlerLocal(ev)} style={{ backgroundColor: ev }} className="single-product-color" />
+                            }
                             <p>{ev}</p>
                           </div>
                         ))} 
@@ -360,22 +412,42 @@ console.log(inCartLocal, 'out');
           <div>
           {user ?
             <>
-          <div>
+
                     {(!colorDiv) && !colorErr && <p>Select color to order</p>}
                     {colorErr && !colorDiv && <p className="text-danger">Select color first</p>}
                     {(colorDiv) && <p className="text-success">You are ready to Order</p>}
+<div className="bottom-0 w-100 d-flex justify-content-center border border-warning rounded-5 ">
                     {inCart ? 
-                    <div id="j-c">
-          <ButtonGroup>
-              <Button aria-label="reduce" onClick={() =>  decreaseHandler() }><RemoveIcon fontSize="small" /></Button>
-              {loadingAdd ? <h1>...</h1> : <h1>{inCart.qty}</h1>}
-              <Button aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
-          </ButtonGroup>
+                    <div id="between" className="w-100 mx-3">
+                      ${data.price}
+        {loadingAdd ? 
+                    <>
+                      {!loadingAdd ? <h1 className="loading2"  style={{width:'30px'}} /> : <h1>{inCart.qty}</h1>}
+                    </>
+                  :
+                    <ButtonGroup>
+                        <Button className="border-0" aria-label="reduce" onClick={() =>  decreaseHandler() }><RemoveIcon fontSize="small" /></Button>
+                          <h1>{inCart.qty}</h1>
+                        <Button className="border-0" aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
+                    </ButtonGroup>
+          }
+          {inCartLocal ? inCartLocal.color : colorDiv}
           </div>
               : 
-                  <button className="btn" type="submit" onClick={addHandler}>Add to Your Cart  <FaCartShopping /> </button>
+          <>
+          {loadingAdd ? 
+            <h1 className="loading2 p-0 m-0"/>
+            :
+            <button onClick={addHandler} type="submit" className="btn w-100 h-100" >
+            Add to Your Cart <FaCartShopping />
+            </button>
+          }
+            </>
+
             }
           </div>
+
+
 
               {loadingFav ? 
                   <h1>...</h1>
@@ -427,22 +499,19 @@ console.log(inCartLocal, 'out');
 
 
 {(!colorDiv) && !colorErr && <p>Select color to order</p>}
-{/* {(!colorDiv) && !colorErr && <div id="d-f"><p>Color: White</p><p>price: 10</p></div>} */}
 {colorErr && !colorDiv && <p className="text-danger text-center">Select color first</p>}
 {(colorDiv) && (!inCartLocal) && <p className="text-success">You are ready to Order</p>}
 
 <div className="btn bottom-0 w-100 text-center border border-warning rounded-5">
-{/* {console.log(inCartLocal.color, colorDiv)} */}
-{/* {(inCartLocal, inCartLocal.color === colorDiv) ?  */}
 {(inCartLocal) ? 
 <div id="between" >
   ${data.price}
 <ButtonGroup>
 <Button aria-label="reduce" onClick={() =>  decreaseHandlerLocal() }><RemoveIcon fontSize="small" /></Button>
-{loadingAdd ? <h1>...</h1> : 
+{loadingAdd ? <h1 className="loading2" style={{width:'30px'}}/> : 
 <>
-<div className="btn w-100 border " >
 {/* //////// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadd to cart */}
+<div className="btn w-100 border " >
 {inCartLocal.qty} 
 </div>
 </>
@@ -452,38 +521,23 @@ console.log(inCartLocal, 'out');
  {inCartLocal ? inCartLocal.color : colorDiv}
 </div>
 : 
-<button onClick={addHandlerLocal} type="submit" className="btn w-100 h-100" >
-Add to Cart  <FaCartShopping /> 
-</button>
+
+<>
+{loadingAdd ? 
+  <h1 className="loading2 p-0 m-0"/>
+  :
+  <button onClick={addHandlerLocal} type="submit" className="btn w-100 h-100" >
+  Add to Your Cart <FaCartShopping />
+  </button>
+}
+  </>
 }
 </div>
-
-
 </>
-
-
-
-
-
-
-
-
-
-
 
 
           }
           </div>
-
-          {/* </div> */}
-
-
-      </div>
-
-
-        {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
-
-        {/* here outside of the main - this is the next line - hidden stuff (shoe more) */}
 
         <div>
           {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
@@ -503,19 +557,28 @@ Add to Cart  <FaCartShopping />
             <p className="p-3" style={{ marginRight: '170px' }}>{data.depth} depth </p>
           </div>
 }
+</div>
+{/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
+{/* here outside of the main - this is the next line - hidden stuff (shoe more) */}
+
+
+
+
+
+
 
         {/* THE BIG IMAGE AND REVIEW / THE LAST THINGS IN THE PAGE */}
         {/* HERE STARTS WITH THE BIG IMAGE  */}
+
+        <div>
+
 
         <div id="t-a-c" className="mt-4"  >
           <img src={data.images.special} alt="special" className="special-img" />
         </div>
 
-        <div className="m-4">
-          <h5>Product Description</h5>
-          {/* <p style={{ paddingBottom: "10px", marginLeft: "30px", }} className="line">This product is really awesome and some details will be here soon..</p> */}
+        <div>
 
-          <h4>Product Details</h4>
           <div style={{ paddingBottom: "10px", marginLeft: "30px", }} className="line" >
 
           </div>
@@ -544,7 +607,7 @@ Add to Cart  <FaCartShopping />
           </div>
 
 
-              <section className="overflow-hidden">
+              <div className="overflow-hidden">
                 <div className="between"> <h4>Review with images</h4> <p className="blue" style={{marginTop:'10px'}}>See all photos</p></div>
                 <div className="d-flex align-items-center line" >
                   <i className="fa fa-arrow-left" />
@@ -555,13 +618,13 @@ Add to Cart  <FaCartShopping />
                   </div>
                   <i className="fa fa-arrow-right" />
                 </div>
-          </section>
+          </div>
 
       
 
           {/* REVIEW */}
 
-          <section className="py-4" id="review" >
+          <div className="py-4" id="review" >
 
                 <div id="between">
                   <h3>Reviews</h3>
@@ -606,14 +669,17 @@ Add to Cart  <FaCartShopping />
 </div>
 
                   </div>
-          </section>
+          </div>
+        </div>
+
 
     {/* SIMILAR PRODUCT  */}
 <h3>You also may interested</h3>
     <Similar data={data} />
 
-            </div>
         </div>
+
+      </div>
   );
 }
 

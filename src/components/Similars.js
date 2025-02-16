@@ -26,7 +26,7 @@ const history = JSON.parse(localStorage.getItem('history'))
                 <a href={`/product/${ev._id}`}>
                   <img src={ev.images.title} alt="title" />
                 </a>
-                <p>{ev.name}</p>
+               {!props.nameOff && <p>{ev.name}</p> }
               </div>
             ))}
           </div>

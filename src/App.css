@@ -1,7 +1,12 @@
 /* ///////////////GLOBAL///////////////// */
 
 
-
+.test{
+display: flex;
+width: 100%;
+justify-content: flex-end;
+border: 2px solid green;
+}
 
 
 
@@ -113,7 +118,7 @@
 
 #no-a {
   color: black;
-  color: white;
+  /* color: white; */
   text-decoration: none;
 }
 
@@ -362,8 +367,6 @@ display: flex;
   border: 2px solid skyblue;
   margin: 10px;
 }
-
-
 
 .single-product-text-align {
   text-align: justify;
@@ -839,7 +842,8 @@ gap: 20px;
 .home222 a {
   text-decoration: none;
   color: black;
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 6px;
   border: 1px solid black;
   border-radius: 20px;
   margin: 0 5px;
@@ -853,7 +857,6 @@ gap: 20px;
 }
 .start-now-butt {
   background-color: black;
-  color: white;
   border-radius: 10px;
   border: none;
   font-size: 14px;
@@ -959,8 +962,31 @@ gap: 20px;
     width: 80%;
   }
 
+  .empty-img{
+    width: 350px;
+  }
+
 /* phone cellphone android small */
 @media screen and (max-width: 650px) {
+
+  .empty-img{
+    width: 150px;
+  }
+
+  .empty{
+    display: grid;
+  }
+
+  .empty h4{
+    font-size: 15px;
+  }
+
+  .empty span {
+    width: fit-content;
+    background-color: rgb(255, 221, 0);
+    padding: 2px 4px;
+    font-size: 10px;
+  }
 
   .special-img{
     width: 95%;
@@ -1014,7 +1040,8 @@ gap: 20px;
 
   .home-products {
     width: 49%;
-    padding: 10px;
+    /* padding: 10px; */
+    padding: 0 5px;
     overflow: hidden;
   }
 

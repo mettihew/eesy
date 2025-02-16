@@ -17,7 +17,8 @@ function Header(props) {
   const user = JSON.parse(localStorage.getItem("user")); // user name
   const inpFocus = useRef(); //focus
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
+  const [cartLength, setCartLength] = useState([]);
   const [ip, setIp] = useState([]);
   // const [searchModal, setSearchModal] = useState(props.downBlur);
   const [searchData, setSearchData] = useState([]);
@@ -27,24 +28,23 @@ function Header(props) {
 
   useEffect(() => {
     // CART LENGTH
-    const user = JSON.parse(localStorage.getItem("user")); // user name
-
+    const user = JSON.parse(localStorage.getItem("user")); 
+    
     if (user) {
       const uId = user._id;
       axios
-        .post(`${URL}/get-cart`, { uId })
-        .then((res) => setData(res.data))
-        .catch((err) => console.log(err.request.reponse));
-
-      //  USER IP ADDRESS
-      axios
-        .get(`${URL}/get-ip`)
-        .then((ev) => setIp(ev.data))
-        .catch(() => console.log("error"));
+      .post(`${URL}/get-cart-length`, { uId })
+      .then((res) => setCartLength(res.data))
+      .catch((err) => console.log(err.request.reponse));
+    }else{
+      const cartLocal = JSON.parse(localStorage.getItem("cart")); 
+      if(!cartLocal) return
+      setCartLength(cartLocal.length)
     }
+
   }, []);
 
-  const search = window.location.search;
+  const search = window.location.search; 
   let key;
   let cat;
   const arr = search.split("&");
@@ -165,7 +165,7 @@ function Header(props) {
 
           <div className={props.downBit ? "searchModal" : "searchModalHidden"} >
             <div id="around">{searchMap}</div>
-            {searchMap.length === 0 && <div id="d-g">
+            {searchMap?.length === 0 && <div id="d-g">
              <p>Search in another category</p>
              <a href="dishwasher" id="no-a"><CiSearch /> dishwasher</a>
              <a href="refrigerator" id="no-a"><CiSearch /> refrigerator</a>
@@ -219,8 +219,8 @@ function Header(props) {
           {/* CART  */}
           <a href="/cart" className="cart-img" id="no-a">
             <div id="d-f">
-              {data.length > 0 &&
-              <h6 style={{ marginRight: "-25px",  marginTop: "8px", color: "white", }} > {data.length}</h6>
+              {cartLength > 0 &&
+              <h6 style={{ marginRight: "-25px",  marginTop: "8px", color: "white", }} > {cartLength}</h6>
               }
               <img src={cart} alt="cart" />
               <p style={{ marginTop: "40px", color: "white" }}>Cart</p>
@@ -231,7 +231,7 @@ function Header(props) {
 
       {/* LINE TWO  */}
 
-      <div className="container-fluid gap-10" id="a-c" >
+      <div className="gap-10" id="a-c" >
         <Drawer onColor="white"/>
         <div className="header-items">
           <a href={`/products`} style={{ color: "lightgreen" }}>
@@ -245,7 +245,7 @@ function Header(props) {
     </div>
 
 
-    <div className="header-short container-fluid">
+    <div className="header-short ">
     <div className="short-line1">
       <a href="/" id="no-a"> <h3 style={{color:'black'}}> eesy </h3> </a>
 
@@ -265,7 +265,7 @@ function Header(props) {
       {/* <div style={{marginTop:'-4px'}}> */}
       <div>
       <a href="/cart">
-      {data.length > 0 &&  <p className="cart-short">{data.length}</p> }
+      {cartLength > 0 &&  <p className="cart-short">{cartLength}</p> }
       <BsCart3 size={'23px'} color="black" cursor={'pointer'} style={{marginTop:'-5px'}}/>
       </a>
       </div>
@@ -285,7 +285,7 @@ function Header(props) {
 
          <div className={props.downBit ? "searchModal-short" : "searchModalHidden"}>
             <div id="around">{searchMap}</div>
-            {searchMap.length === 0 && <div id="d-g">
+            {searchMap?.length === 0 && <div id="d-g">
              <p>Search in another category</p>
              <a href="dishwasher" id="no-a"><CiSearch /> dishwasher</a>
              <a href="refrigerator" id="no-a"><CiSearch /> refrigerator</a>
