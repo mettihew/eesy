@@ -26,10 +26,9 @@ function Login() {
       setLoader(true)
       axios.post(`${URL}/login`, v)
       .then((res) => {
-        // ADD USER TO LOCALSTORAGE TO HAVE SOME DATA ABOUT THEM
-        // IF USER HAD PRODUCTS BEFORE LOGIN - ADD THEM TO UESR CARTD AND DELETE THEM FROM LOCALSTORAGE
         const cartLocal = JSON.parse(localStorage.getItem('cart'))
         if(cartLocal){
+          // ADD CART TO USER CART
           localStorage.removeItem('cart')
           axios.post(`${URL}/add-local-to-cart`, { uId: res.data._id, cartLocal: cartLocal[0] })
           .then(res => {
@@ -43,7 +42,8 @@ function Login() {
         }
       })
         .catch((err) => 
-          {alert(err.request.response)
+          {
+            alert(err.request.response)
             setLoader(false)
     })
     }
