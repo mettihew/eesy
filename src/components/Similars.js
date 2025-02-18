@@ -19,7 +19,7 @@ const history = JSON.parse(localStorage.getItem('history'))
     <>
       {history && (
         <>
-          {props.text}
+        {props.text} 
         <div className="d-flex flex-wrap">
             {history?.map((ev) => (
               <div key={ev._id} className="home-products">

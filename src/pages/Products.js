@@ -1,6 +1,7 @@
 import axios from "axios";
 import { URL } from "../utils/URL";
 import React, { useEffect, useState } from "react";
+import fashion_girl_2 from '../images/fashion-girl-2.avif'
 
 function Products() {
   const [productState, setData] = useState()
@@ -28,6 +29,12 @@ function Products() {
 
   return (
     <div id="col-ce" className=" gray py-4">
+
+  {/* <div className=""> */}
+    <img width={"100%"} className="test" src={fashion_girl_2} alt="fahion girl" />
+  {/* </div> */}
+
+
 
       <p>{cat}</p>
 

@@ -167,12 +167,13 @@ function Header(props) {
             <div id="around">{searchMap}</div>
             {searchMap?.length === 0 && <div id="d-g">
              <p>Search in another category</p>
-             <a href="dishwasher" id="no-a"><CiSearch /> dishwasher</a>
-             <a href="refrigerator" id="no-a"><CiSearch /> refrigerator</a>
-             <a href="ice-maker" id="no-a"><CiSearch /> ice-maker</a>
-             <a href="microwave" id="no-a"><CiSearch /> microwave</a>
+             <a href="category?cat=dishwasher" id="no-a"><CiSearch /> dishwasher</a>
+             <a href="category?cat=refrigerator" id="no-a"><CiSearch /> refrigerator</a>
+             <a href="category?cat=ice-maker" id="no-a"><CiSearch /> ice-maker</a>
+             <a href="category?cat=microwave" id="no-a"><CiSearch /> microwave</a>
              </div>}
-              <a> <CiSearch /> {searchData} </a>
+             {searchData && <a href={`/s?k=${searchData}`}> <CiSearch /> {searchData} </a>}
+
           </div>
 
 
@@ -287,12 +288,12 @@ function Header(props) {
             <div id="around">{searchMap}</div>
             {searchMap?.length === 0 && <div id="d-g">
              <p>Search in another category</p>
-             <a href="dishwasher" id="no-a"><CiSearch /> dishwasher</a>
-             <a href="refrigerator" id="no-a"><CiSearch /> refrigerator</a>
-             <a href="ice-maker" id="no-a"><CiSearch /> ice-maker</a>
-             <a href="microwave" id="no-a"><CiSearch /> microwave</a>
+             <a href="category?cat=dishwasher" id="no-a"><CiSearch /> dishwasher</a>
+             <a href="category?cat=refrigerator" id="no-a"><CiSearch /> refrigerator</a>
+             <a href="category?cat=ice-maker" id="no-a"><CiSearch /> ice-maker</a>
+             <a href="category?cat=microwave" id="no-a"><CiSearch /> microwave</a>
              </div>}
-              <a> <CiSearch /> {searchData} </a>
+             {searchData && <a href={`/s?k=${searchData}`}> <CiSearch /> {searchData} </a>}
           </div> 
 
 </div>

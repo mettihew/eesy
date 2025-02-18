@@ -1,18 +1,15 @@
-import axios  from 'axios'
-import { URL } from "../utils/URL";
+import fashion_girl_1 from '../images/fashion-girl-1.avif'
+import fashion_girl_2 from '../images/fashion-girl-2.avif'
+import fashion_girl_3 from '../images/fashion-girl-3.avif'
+import style from '../pages/Category.module.css'
 
-
-export default function Test(){
-  const cartLocal = JSON.parse(localStorage.getItem('cart'))
-
-
-  // axios.post(`${URL}/add-local-to-cart`, { uId, cartLocal: cartLocal[0] })
-   
-
-
-  return(
-    <div>
-      test
+function Test() {
+   return(
+    <div className={style.headerImagesSlider}>
+      <img src={fashion_girl_1} id='active'/>
+      <img src={fashion_girl_2} />
+      <img src={fashion_girl_3} />
     </div>
-  )
+   )
 }
+export default Test

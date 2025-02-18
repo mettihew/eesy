@@ -355,7 +355,7 @@ const colorHandler = (eve) => {
           {/* --------------------------------------------------------HERE WE HAVE TWO PARTS - PART1: IMAGES IN THE LEFT - PART2: PRODUCT DETAILS AND ADD TO CART IN THE RIGHT  */}
           {/*------------ PART1 OF LINE1 - SMALL AND BIG IMAGES */}
            <div className="single-images" >
-              <Zoom><img alt="title" src={data.images.title} className="title-img" /></Zoom>
+              <Zoom><img className="title-img" src={data.images.title}  alt="title"/></Zoom>
             <div className="others-img-div">
               {data.images.others.map((ev, i) => (
                  <Zoom key={i}><img alt="others" src={ev} className="others-img"/></Zoom> 
@@ -368,7 +368,7 @@ const colorHandler = (eve) => {
 
           <div id="d-g" style={{maxWidth:'600px'}}>
 
-            <h4 className="m-1">{data.name}</h4>
+            <h4 className="single-name">{data.name}</h4>
 
             <div className="blue">
               <p> Brand  : {data.brand} </p>
@@ -404,8 +404,6 @@ const colorHandler = (eve) => {
                         ))} 
             </div>
 
-
-           
           </div>
 
           {/* 1 - LOGIN  */}
@@ -539,23 +537,17 @@ const colorHandler = (eve) => {
           }
           </div>
 
+
+
         <div>
-          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
+          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue mt-5 mb-0" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
         </div>
+        
 
 {showMore &&
-          <div id='d-g' className="single-product-text-align px-5">
-            {/* <div style={{ padding: "30px 0" }} className="line" /> */}
-
-            <h5 style={{ marginTop: '10px' }}>weight</h5>
-            <p className="p-3" style={{ marginRight: '170px' }}>{data.weight} weight</p>
-
-            <h5 style={{ marginTop: '10px' }}>height</h5>
-            <p className="p-3" style={{ marginRight: '170px' }}>{data.height} height</p>
-
-            <h5 style={{ marginTop: '10px' }}>depth</h5>
-            <p className="p-3" style={{ marginRight: '170px' }}>{data.depth} depth </p>
-          </div>
+          // <div id='d-g' className="single-product-text-align px-5">
+          // </div>
+            <h1>{data.name}</h1>
 }
 </div>
 {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
@@ -674,7 +666,7 @@ const colorHandler = (eve) => {
 
 
     {/* SIMILAR PRODUCT  */}
-<h3>You also may interested</h3>
+<h6>You may also interested</h6>
     <Similar data={data} />
 
         </div>

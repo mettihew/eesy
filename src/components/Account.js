@@ -7,9 +7,9 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import {Link} from 'react-router-dom'
 
 export default function Account(){
+  
      const user = JSON.parse(localStorage.getItem('user'))
- 
-       if(!user) return window.location.href = "/login"
+       if(!user) return window.location.href = "login"
 
   function outHandler () {
       localStorage.removeItem('user')

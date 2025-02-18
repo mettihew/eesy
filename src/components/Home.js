@@ -112,7 +112,7 @@ function Home() {
 <div className="home-short mt-5">
   <h5 style={{fontFamily:'serif', fontWeight:'bold', margin: '25px'}}>Women and fashion</h5>
   <img style={{marginLeft:'4px'}} width={"97%"} src={fashion_girl_1} />
-  <button className="start-now-butt m-3 p-1" ><a href={`/clothes`} className="text-decoration-none text-white"> Start now </a>  </button>
+  <button className="start-now-butt m-3 p-1" ><a href={`/category?cat=women`} className="text-decoration-none text-white"> Start now </a>  </button>
 </div>
 
 

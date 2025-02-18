@@ -26,15 +26,27 @@ function SignUp() {
       axios
         .post(`${URL}/register`, values)
         .then((res) => {
-          localStorage.setItem("user", JSON.stringify(res.data));
-          window.location.href = "/account";
+          const cartLocal = JSON.parse(localStorage.getItem('cart'))
+          if(cartLocal){
+            // ADD CART TO USER CART
+            localStorage.removeItem('cart')
+            axios.post(`${URL}/add-local-to-cart`, { uId: res.data._id, cartLocal: cartLocal[0] })
+            .then(res => {
+              localStorage.setItem('user', JSON.stringify(res.data))
+              window.location.reload()
+            })
+          }
+          else{
+            localStorage.setItem('user', JSON.stringify(res.data))
+            window.location.reload()
+          }
         })
-        .catch((err) => 
-          {alert(err.request.response)
-            setLoader(false)
+          .catch((err) => 
+            {alert(err.request.response)
+              setLoader(false)
+      })
+      }
     })
-    },
-  });
 
   const user = JSON.parse(localStorage.getItem('user'))
   if(user) return window.location.assign("/account")
