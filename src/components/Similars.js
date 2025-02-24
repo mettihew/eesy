@@ -41,7 +41,7 @@ export function Similar(props) {
 
   useEffect(() => {
   axios
-    .post(`${URL}/home-cat`, { category: props.data.category })
+    .post(`${URL}/cat-home`, { category: props.data.category })
     .then((res) => setSimilar(res.data));
 }, [])
 

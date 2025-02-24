@@ -82,9 +82,6 @@ export default function CustomizedSlider(props) {
         {value[1] === 200 && <h4>+</h4>}
       </div>
 
-      <form onSubmit={goHandler}>
-        <button>Go</button>
-      </form>
 
       <AirbnbSlider
         slots={{ thumb: AirbnbThumbComponent }}
@@ -95,6 +92,7 @@ export default function CustomizedSlider(props) {
         onChange={handleChange}
         max={max}
       />
+          <form onSubmit={goHandler} style={{marginTop:'-5px', marginBottom:'15px'}}><button className="btn">Go</button></form>
     </Box>
   );
 }

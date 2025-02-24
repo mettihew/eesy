@@ -2,13 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 import { useLocation } from "react-router";
-
+import Rating from '@mui/material/Rating';
 import { FaAngleRight, FaAngleUp, FaHeart } from 'react-icons/fa'
 import { FaCartShopping, FaCodeCompare } from "react-icons/fa6";
-// import ProductCard from "../components/ProductCard";
 import axios from "axios";
 import { URL } from "../utils/URL";
-// import { FaAngleDoubleRight } from "react-icons/fa";
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
@@ -16,7 +14,6 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Similar } from "../components/Similars";
 
 function SingleProduct() {
-  const [reRender, setReRender] = useState()
   const [colorDiv, setColorDiv] = useState()
   const [showMore, setShowMore] = useState(false)
   const [colorErr, setColorErr] = useState(false)
@@ -28,9 +25,8 @@ function SingleProduct() {
   const [reviewErr, setReviewErr] = useState(false)
   const [report, setReport] = useState(false)
   const reviewRef = useRef()
-  const ratingRef = useRef()
+  const [rating, setRating] = useState(null)
   const reportRef = useRef()
-
   const [data, setData] = useState(null)
   const user = JSON.parse(localStorage.getItem('user'))
   const [inCart, setInCart] = useState()
@@ -73,7 +69,6 @@ function SingleProduct() {
     })
 }
 
-// fffffffffffffffffffffffffff  hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
     const cartLocal = JSON.parse(localStorage.getItem('cart'))
     if(cartLocal){
@@ -197,23 +192,19 @@ const colorHandler = (eve) => {
     if(!colorDiv) return setColorErr("Select color first from add handler local")
       setLoadingAdd(true)
     const cart = JSON.parse(localStorage.getItem('cart'))
-    if(cart){
-      cart.map(ev => {
-      if(ev.pId.includes(pId) && ev.color === colorDiv ) {
-        const cart2 = [{ pId: data._id, color: colorDiv, qty: ev.qty += 1  }]
-        localStorage.setItem('cart', JSON.stringify(cart2))
-      }else{
-        const cart2 = { pId: data._id, color: colorDiv, qty: 1  }
-        cart.push(cart2)
-        localStorage.setItem('cart', JSON.stringify(cart))
-      }
-    })}
     if(!cart){
       const cart = [{ pId: data._id, color: colorDiv, qty: 1 }]
       localStorage.setItem('cart', JSON.stringify(cart))
+    window.location.reload()
+      return
     }
+    const cart2 = { pId: data._id, color: colorDiv, qty: 1  }
+    cart.push(cart2)
+    localStorage.setItem('cart', JSON.stringify(cart))
     window.location.reload()
   }
+
+   
 
   const increaseHandler = () => {
     setLoadingAdd(true)
@@ -229,25 +220,17 @@ const colorHandler = (eve) => {
     .catch((err) => alert(err.request.response))
   }
 
-
   const increaseHandlerLocal = () => {
     setLoadingAdd(true)
-    const cart = [{ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 }]
-    //HERE
-    //HERE
-    //HERE
-    //HERE
-    //HERE
-    //HERE
-    //HERE
-    // YOU HAVE TO SAY IF CARTLOCAL IS EMPTY THE BELOW SETITEM 
-    // localStorage.setItem('cart', JSON.stringify(cart))
-    // ELSE 
-    // PUSH TO OTHER ITEMS AND THEN SET TO LOCALSTORAGE
-    
-      localStorage.setItem('cart', JSON.stringify(cart))
-      setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 })
-      setLoadingAdd(false)
+    const cartLocal = JSON.parse(localStorage.getItem('cart'))
+
+    cartLocal.find(ev => {
+      if(ev.pId === pId && ev.color === colorDiv) return ev.qty += 1
+    })
+    localStorage.setItem('cart', JSON.stringify(cartLocal))
+    setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty + 1 })
+
+    setLoadingAdd(false)
 }
 
   const decreaseHandler = () => {
@@ -267,10 +250,15 @@ const colorHandler = (eve) => {
 
   const decreaseHandlerLocal = () => {
     setLoadingAdd(true)
-    const cart = [{ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty - 1 }]
-    localStorage.setItem('cart', JSON.stringify(cart))
-      setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty - 1 })
-      setLoadingAdd(false)
+    const cartLocal = JSON.parse(localStorage.getItem('cart'))
+
+    cartLocal.find(ev => {
+      if(ev.pId === pId && ev.color === colorDiv) return ev.qty -= 1
+    })
+    localStorage.setItem('cart', JSON.stringify(cartLocal))
+    setInCartLocal({ pId: data._id, color: inCartLocal.color, qty: inCartLocal.qty - 1 })
+
+    setLoadingAdd(false)
 }
 
   const handleFavorite = () => {
@@ -297,7 +285,7 @@ const colorHandler = (eve) => {
     ev.preventDefault()
     setReviewErr(false)
     const review = reviewRef.current.value
-    const rating = Number(ratingRef.current.value)
+    // const rating = Number(ratingRef.current.value)
   
     if(!review || !rating) return setReviewErr("review and rating are required")
     axios 
@@ -306,11 +294,13 @@ const colorHandler = (eve) => {
      .catch((err) => alert(err.request.response))
   }
 
+  //calculate review
   let arr = []
   data.review.map(ev => arr.push(Number(ev.rating)))
   if(arr.length === 0) arr = [0]
   const reviewAverage = array => array.reduce((a, b) => a + b) / array.length;
 
+  // is in favorite list?
   let fav = user?.favorite?.find(ev => {
     return ev === pId
       })
@@ -344,7 +334,7 @@ const colorHandler = (eve) => {
           <FaAngleRight color="gray" size="12px" />
           <a href={`/products`} >Products</a>
           <FaAngleRight color="gray" size="12px" />
-          <a href={`/category?cat=${data.category}`} >{data.category}</a>
+          <a href={`/category?cat=${data?.category}`} >{data?.category}</a>
           <FaAngleRight color="gray" size="12px" />
         </div>
 
@@ -370,28 +360,39 @@ const colorHandler = (eve) => {
 
             <h4 className="single-name">{data.name}</h4>
 
-            <div className="blue">
-              <p> Brand  : {data.brand} </p>
+            <div className="line py-2">
 
-              <p className="line" >
-                | 32 answered questions
-              </p>
+            <p className="mb-0 p-0">Based on {data.review.length} Reviews</p>
+                {reviewAverage === 0 ? 
+                <p className="text-warning mb-0 p-0">reviews: No review</p>
+                :
+                <div id="d-f">
+                  <Rating name="half-rating-read" size="small" defaultValue={reviewAverage(arr).toFixed(1)} precision={0.5} readOnly />
+                  <p className="text-warning mb-0 p-0"> {reviewAverage(arr).toFixed(1)}</p>
+                </div>
+              }
+              <p className="p-0 m-0"> Brand  : {data.brand} </p>
+              <p className="p-0 m-0"> Stock  : {data.stock} </p>
+             {data.best_seller && <p className="text-danger mb-0 p-0"> Best seller </p> }
+              <p className="p-0 m-0"> {data.review.length} answered questions</p>
             </div>
 
             <div id="d-f" className="gap-10">
               <p>Price :</p>
               <h5 className="text-danger">${data.price}</h5>
             </div>
+              <p className="text-info p-0 m-0">Or ${data.price - 20} /mo (24 mo). Select from 1 plan join prime to buy this item at ${data.price - 30}.99</p>
+              <p className="p-0 m-0">Free delivery March 3 - 5.</p>
+              <p className="p-0 m-0">Usually ship within 4 - 5 days.</p>
 
-            <p>Color :</p>
+            
 
-            {colorDiv && <div className="d-flex my-2 gap-10"> 
-              <p className="py-1">Selected color:</p>
-              <div className="color-global " style={{ backgroundColor: colorDiv }} />
-              <p className="py-1">{colorDiv}</p>
-            </div>}
+<div id="a-c"> 
+            <p className="p-0 m-0">Color : &nbsp; &nbsp;</p>
 
-            <div id="d-f" className="gap-30">
+         
+
+            <div id="d-f" className="gap-3">
                           {data.color.map((ev, i) => (
                           <div key={i}>
                             {user?
@@ -403,17 +404,25 @@ const colorHandler = (eve) => {
                           </div>
                         ))} 
             </div>
+</div>
+
+{colorDiv && <div className="d-flex my-2 gap-10"> 
+              <p className="py-1">Selected color:</p>
+              <div className="color-global " style={{ backgroundColor: colorDiv }} />
+              <p className="py-1">{colorDiv}</p>
+            </div>}
+
 
           </div>
 
           {/* 1 - LOGIN  */}
           <div>
-          {user ?
+{user ?
             <>
 
-                    {(!colorDiv) && !colorErr && <p>Select color to order</p>}
-                    {colorErr && !colorDiv && <p className="text-danger">Select color first</p>}
-                    {(colorDiv) && <p className="text-success">You are ready to Order</p>}
+                    {(!colorDiv) && !colorErr && <p className="p-0 m-0">Select color to order</p>}
+                    {colorErr && !colorDiv && <p className="text-danger p-0 m-0">Select color first</p>}
+                    {(colorDiv) && <p className="text-success p-0 m-0">You are ready to Order</p>}
 <div className="bottom-0 w-100 d-flex justify-content-center border border-warning rounded-5 ">
                     {inCart ? 
                     <div id="between" className="w-100 mx-3">
@@ -452,18 +461,13 @@ const colorHandler = (eve) => {
                   :
                   <>
                     {fav ?
-                    // YOU HAVE THE PRODUCT
                       <div className="single-product-add-to-cart-button d-flex" id="j-c">
                         <a href="/favorite" className="blue" style={{ fontSize: 'small' }}> Go to favorite list </a> &nbsp;
                         <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleFavorite}> / delete &nbsp;</p>
-
                           <FaHeart color="red" /> 
                       </div>
                       :
-                    // DO NOT HAVE THE PRODUCT
-                        // <div className="single-product-add-to-cart-button" id="ac">
                       <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleFavorite}>Add to Favorite <FaHeart color="black" /></button>
-                        // </div>
                     }
                   </>
               }
@@ -473,7 +477,6 @@ const colorHandler = (eve) => {
                   :
                   <>
                     {com ?
-                    // YOU HAVE THE PRODUCT
                       <div className="single-product-add-to-cart-button d-flex">
                         <a href="compare-product" className="blue" style={{ fontSize: 'small' }}>Go To Compare</a> &nbsp;
                         <p className="text-danger" style={{ fontSize: 'small' }} id="c-p" onClick={handleCompare}> / حذف</p>
@@ -482,23 +485,16 @@ const colorHandler = (eve) => {
                           </button> 
                       </div>
                       :
-                    // DO NOT HAVE THE PRODUCT
-                        // <div id="ac">
                       <button className="btn" style={{ fontSize: 'small', backgroundColor: 'white' }} onClick={handleCompare}>Add to Compare <FaCodeCompare color="black" /></button>
-                      // </div>
                     }
                   </>
               }
             </>
-          :
-              // NOT LOGGED IN - ADD TO LOCALSTORAGE CART
-
+          : // NO USER 
 <>
-
-
-{(!colorDiv) && !colorErr && <p>Select color to order</p>}
-{colorErr && !colorDiv && <p className="text-danger text-center">Select color first</p>}
-{(colorDiv) && (!inCartLocal) && <p className="text-success">You are ready to Order</p>}
+{(!colorDiv) && !colorErr && <p className="p-0 m-0">Select color to order</p>}
+{colorErr && !colorDiv && <p className="text-danger text-center p-0 m-0">Select color first</p>}
+{(colorDiv) && (!inCartLocal) && <p className="text-success p-0 m-0">You are ready to Order</p>}
 
 <div className="btn bottom-0 w-100 text-center border border-warning rounded-5">
 {(inCartLocal) ? 
@@ -519,7 +515,6 @@ const colorHandler = (eve) => {
  {inCartLocal ? inCartLocal.color : colorDiv}
 </div>
 : 
-
 <>
 {loadingAdd ? 
   <h1 className="loading2 p-0 m-0"/>
@@ -531,25 +526,58 @@ const colorHandler = (eve) => {
   </>
 }
 </div>
+<div id="d-f"> <FaHeart size={"10px"} style={{marginTop:'2px'}}/><a href="/login" style={{fontSize:'10px', textDecoration:'none'}}>Login</a> </div>
 </>
+} {/* USER ? : ENDS  */}
+
+<div id="d-g">
+       <div id="d-g"> <p className="mt-4 mb-0">Shipped & sold by: </p> <p className="text-info mt-0 mb-0">{data.brand} Innovation Direct</p>  </div>
+       <div id="d-g"> <p className="m-0 p-0">Returns: </p> <p className="text-info mb-0">30-day refund/replacement</p>  </div>
+       <div id="d-g"> <p className="m-0 p-0">Payment: </p> <p className="text-info mb-0">secure transaction</p>  </div>
+</div>
+</div>
 
 
-          }
-          </div>
 
+</div> 
+{/* LINE1 ENDS */}
 
 
         <div>
-          {showMore ? <p id="c-p" onClick={() => setShowMore(false)} ><FaAngleUp />Close</p> : <p className="blue mt-5 mb-0" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
-        </div>
+        <h4>Product details</h4>
+
+           { data.more.map((ev, i) => {
+              return(
+                <div id="between" style={{padding:'0 4%'}} key={i}>
+                <p>{ev.first}</p> 
+                <p>{ev.second}</p>
+                </div>
+              )
+            })
+          }
+
+          {showMore ? <p id="c-p" className="text-info" onClick={() => setShowMore(false)} ><FaAngleUp /> Close</p> : <p className="blue mt-5 mb-0" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
+
+{showMore && <p>{data.about_this_item.map(ev => <p>&#8226; {ev}</p>)}</p> }
+
         
 
 {showMore &&
-          // <div id='d-g' className="single-product-text-align px-5">
-          // </div>
-            <h1>{data.name}</h1>
-}
+            data.detail.map((ev, i) => {
+              return(
+                <div id="between" style={{padding:'0 4%'}} key={i}>
+                <p>{ev.first}</p> 
+                <p>{ev.second}</p>
+                </div>
+              )
+            })}
+
+{showMore && <p>{data.description}</p> }
+
 </div>
+
+
+
 {/* END OF THE MAIN ------------------------------------------------------------------------------------------ */}
 {/* here outside of the main - this is the next line - hidden stuff (shoe more) */}
 
@@ -599,7 +627,7 @@ const colorHandler = (eve) => {
           </div>
 
 
-              <div className="overflow-hidden">
+              <div className="personal-images-div">
                 <div className="between"> <h4>Review with images</h4> <p className="blue" style={{marginTop:'10px'}}>See all photos</p></div>
                 <div className="d-flex align-items-center line" >
                   <i className="fa fa-arrow-left" />
@@ -627,14 +655,18 @@ const colorHandler = (eve) => {
                 {reviewAverage === 0 ? 
                 <p className="text-warning">reviews: No review</p>
                 :
-                <p className="text-warning">reviews: {reviewAverage(arr).toFixed(1)}</p>
+                <div id="d-f">
+                  <Rating name="half-rating-read" size="small" defaultValue={reviewAverage(arr).toFixed(1)} precision={0.5} readOnly />
+                  <p className="text-warning"> {reviewAverage(arr).toFixed(1)}</p>
+                </div>
               }
 
                   <div>
 
                     {user ?
                     <form className="d-flex flex-column">
-                      <input type="number" min={1} max={5} ref={ratingRef}/>
+                      {/* <input type="number" min={1} max={5} ref={ratingRef}/> */}
+                      <Rating name="no-value" size="large" precision={1} onChange={(ev) => setRating(ev.target.value)} />
                       <textarea
                         placeholder="Submit your review ..."
                         cols="30"
@@ -648,16 +680,17 @@ const colorHandler = (eve) => {
                       </div>
                     </form> 
                     :
-                    <a href="login">please login to review</a>
+                    <a href="/login">please login to review</a>
                     }
-
                     <div id="d-g">
+
                   {data.review.map((ev, i) => (
-                    <div key={i} id="d-f">
+                    <div key={i} id="between">
                       <p>{ev.review}</p>
-                      <p>&nbsp; rating: {ev.rating}</p>
+                      <Rating name="half-rating-read" size="small" defaultValue={ev.rating} precision={0.5} readOnly />
                     </div>
               ))} 
+
 </div>
 
                   </div>

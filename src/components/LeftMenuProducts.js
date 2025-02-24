@@ -4,9 +4,8 @@ import { useState } from "react";
 function LeftMenuProducts(props) {
 
     const { data } = props
-    const seller= [{ brand: "Amazon" }, { brand: "Deawo" }]
 
-  let key; let urlMinPrice; let urlMaxPrice; let urlSort; let cat; let page;
+  let key; let urlMinPrice; let urlMaxPrice; let urlSort; let cat; let theBrand;
 
   const search = window.location.search;
   const arr = search.split("&")
@@ -16,7 +15,7 @@ function LeftMenuProducts(props) {
     if(arr[k].includes("cat=")) cat = arr[k].split("=")[1]
     if(arr[k].includes("min_price=")) urlMinPrice = arr[k].split("=")[1]
     if(arr[k].includes("max_price=")) urlMaxPrice = arr[k].split("=")[1]
-    if(arr[k].includes("page=")) page = arr[k].split("=")[1]
+    if(arr[k].includes("brand=")) theBrand = arr[k].split("=")[1]
   }  
 
     // getting and sending min and max price for RangeSlider price (picker) when user does not selected any price at the first place
@@ -25,45 +24,22 @@ function LeftMenuProducts(props) {
     pArr.push(ev.price)
     })
 
-    let min = Math.min(...pArr);
-    let max = Math.max(...pArr);
-
-    if(!urlMinPrice) urlMinPrice = min
-    if(!urlMaxPrice) urlMaxPrice = max
+    // let min = Math.min(...pArr);
+    // let max = Math.max(...pArr);
 
   const [sort, setSort] = useState(urlSort)
-  const [minPrice, setMinPrice] = useState(urlMinPrice)
-  const [maxPrice, setMaxPrice] = useState(urlMaxPrice)
+  const [minPrice, setMinPrice] = useState(Math.min(...pArr))
+  const [maxPrice, setMaxPrice] = useState(Math.max(...pArr))
+  
 
-    // console.log("key=",key, "sort=", sort, "cat=", cat, "minPrice=", minPrice, "maxPrice=", maxPrice);
 const goHandler = (ev) => {
-        // const {minPrice, maxPrice} = ev
-    
-    if(!sort && !minPrice) return
-    
-    if (!sort && !cat && minPrice ) window.location.href = `/s?k=${key}&min_price=${minPrice}&max_price=${maxPrice}`
-    if (sort && !cat && !minPrice ) window.location.href = `/s?k=${key}&sort=${sort}`
-    if (sort && !cat && minPrice ) window.location.href = `/s?k=${key}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`
-    if (!sort && cat && !minPrice ) window.location.href = `/s?k=${key}&cat=${cat}`
-    if (!sort && cat && minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&min_price=${minPrice}&max_price=${maxPrice}`
-    if (sort && cat && minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`
-    if (sort && cat && !minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&sort=${sort}`
-
-  };
-
-  const goHandler2 = (ev) => {
-    const {minPrice, maxPrice} = ev
-
-if(!sort && !minPrice) return
-
-if (!sort && !cat && minPrice ) window.location.href = `/s?k=${key}&min_price=${minPrice}&max_price=${maxPrice}`
-if (sort && !cat && !minPrice ) window.location.href = `/s?k=${key}&sort=${sort}`
-if (sort && !cat && minPrice ) window.location.href = `/s?k=${key}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`
-if (!sort && cat && !minPrice ) window.location.href = `/s?k=${key}&cat=${cat}`
-if (!sort && cat && minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&min_price=${minPrice}&max_price=${maxPrice}`
-if (sort && cat && minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&sort=${sort}&min_price=${minPrice}&max_price=${maxPrice}`
-if (sort && cat && !minPrice ) window.location.href = `/s?k=${key}&cat=${cat}&sort=${sort}`
-
+    let url = `/s?k=${key}`;
+    if(cat) url += `&cat=${cat}`;
+    if(sort) url += `&sort=${sort}`;
+    if(ev) url += `&min_price=${ev.minPrice}`;
+    if(ev) url += `&max_price=${ev.maxPrice}`;
+    if(theBrand) url += `&brand=${theBrand}`;
+    window.location.href = url
 };
 
 const sortHandler = (ev) => {
@@ -74,6 +50,42 @@ const sortHandler = (ev) => {
         window.location.href = search + '&sort=' + ev.target.value
     }
 }
+
+const obj = {};
+const categoryFilter = data?.map(function(ev) {
+  return ev.category;
+}).map(function(category){
+    if(!obj[category]){
+        obj[category] = true;
+        return (
+            <div key={category} id='a-c'>
+                <input type='checkbox' onChange={() => {
+                cat = category
+                goHandler() }}/>
+                <p>&nbsp; {category}</p>
+            </div>
+        )
+    }
+    return false;
+});
+
+const obj2 = {};
+const brandFilter = data?.map(function(ev) {
+  return ev.brand;
+}).map(function(brand){
+    if(!obj2[brand]){
+        obj2[brand] = true;
+        return (
+            <div key={brand} id='a-c'>
+                <input type='checkbox' onChange={() => {
+                theBrand = brand
+                goHandler() }}/>
+                <p>&nbsp; {brand}</p>
+            </div>
+        )
+    }
+    return false;
+});
 
     return (
         <div className='left-menu-products container'>
@@ -88,57 +100,13 @@ const sortHandler = (ev) => {
         <option value="createdAt">recent </option>
     </select>
 
-
-
-            <RangeSlider min={urlMinPrice} max={urlMaxPrice} goP={(ev) => goHandler2(ev)}  />
-
-
+            <RangeSlider min={minPrice} max={maxPrice} goP={(ev) => goHandler(ev)}  />
 
              <h6>Category</h6>
-                {data?.map((ev) => (
-                        <div key={ev._id} id='a-c'>
-                            <input type='checkbox' onChange={() => {
-                                cat = ev.category
-                                goHandler()
-                            }}/>
-                            <p className='my-3'>&nbsp; {ev.category}</p>
-                        </div>
-                ))} 
-                
-
-                <h6 style={{textDecoration:'line-through'}}>Brand(soon)</h6>
-                {/* <h6>Brand</h6> */}
-                {data?.map((ev) => (
-                    <div key={ev._id} id='a-c'>
-                        {/* <input type='checkbox' onClick={() => props.onBrand(ev.brand)} /> */}
-                        <input type='checkbox' onChange={() => {
-                                // brandHandler(ev.brand)
-                            }}/>
-                        <p className='my-3'>&nbsp; {ev.brand}</p>
-                    </div>
-                ))}
-
-            {/* <div className='d-grid py-3'>
-                <h6 style={{ marginBottom: '-5px' }}>Brand</h6>
-                {data.map((ev) => (
-                    <div key={ev._id} className='d-flex p-l-10' style={{ marginBottom: '-25px' }}>
-                        <input type='checkbox' />
-                        <p className='my-3'>&nbsp; {ev.brand}</p>
-                    </div>
-                ))}
-            </div> */}
-
-            <h6 className="my-3" style={{textDecoration:'line-through'}}>Customer Review</h6>
-            <p style={{ fontSize: "30px", color: "yellow", textDecoration:'line-through' }}>&#9733;&#9733;</p>
-
-
-            {/* <h6 style={{ marginTop: "33px" }} >Seller</h6>
-            {seller.map((ev, id) => (
-                <div key={id} className='d-flex p-l-10' style={{ marginBottom: '-25px' }}>
-                    <input type='checkbox' />
-                    <p className='my-3'>&nbsp; {ev.brand}</p>
-                </div>
-            ))}  */}
+             {categoryFilter} 
+          
+            <h6>Brand</h6>
+            {brandFilter}
 
         </div>
     )
