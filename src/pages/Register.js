@@ -51,7 +51,6 @@ function SignUp() {
   const user = JSON.parse(localStorage.getItem('user'))
   if(user) return window.location.assign("/account")
 
-
   // dispatch(createUser(values));
   // dispatch(createUser({ name: name, password: pass, email: email }));
 
@@ -85,7 +84,7 @@ function SignUp() {
             name="email"
             onChange={formik.handleChange("email")}
             value={formik.values.email}
-            id="email"
+            // id="email"
             type="email"
           />
 
@@ -96,7 +95,7 @@ function SignUp() {
             onChange={formik.handleChange("password")}
             name="password"
             value={formik.values.password}
-            id="password"
+            // id="password"
             type="password"
           />
 

@@ -22,6 +22,7 @@ function SingleProduct() {
   const [loadingAdd, setLoadingAdd] = useState(false)
   const [loadingFav, setLoadingFav] = useState(false)
   const [loadingCom, setLoadingCom] = useState(false)
+  const [loadingRev, setLoadingRev] = useState(false)
   const [reviewErr, setReviewErr] = useState(false)
   const [report, setReport] = useState(false)
   const reviewRef = useRef()
@@ -236,7 +237,7 @@ const colorHandler = (eve) => {
   const decreaseHandler = () => {
     setLoadingAdd(true)
     setColorErr(false)
-    axios.post(`${URL}/remove-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
+    axios.post(`${URL}/dec-from-cart`, { pId: data._id, uId: user._id, qty: inCart.qty - 1, color: inCart.color })
     .then(res => {
       localStorage.setItem('user', JSON.stringify(res.data))
       const cart = res.data.cart.find(ev => {
@@ -284,6 +285,7 @@ const colorHandler = (eve) => {
   const reviewHandler = (ev) => {
     ev.preventDefault()
     setReviewErr(false)
+    setLoadingRev(true)
     const review = reviewRef.current.value
     // const rating = Number(ratingRef.current.value)
   
@@ -423,18 +425,16 @@ const colorHandler = (eve) => {
                     {(!colorDiv) && !colorErr && <p className="p-0 m-0">Select color to order</p>}
                     {colorErr && !colorDiv && <p className="text-danger p-0 m-0">Select color first</p>}
                     {(colorDiv) && <p className="text-success p-0 m-0">You are ready to Order</p>}
-<div className="bottom-0 w-100 d-flex justify-content-center border border-warning rounded-5 ">
+<div className="bottom-0 w-100 d-flex justify-content-center border border-warning rounded-5">
                     {inCart ? 
                     <div id="between" className="w-100 mx-3">
                       ${data.price}
         {loadingAdd ? 
-                    <>
-                      {!loadingAdd ? <h1 className="loading2"  style={{width:'30px'}} /> : <h1>{inCart.qty}</h1>}
-                    </>
+                      <h1 className="loading2" style={{width:'30px'}}/> 
                   :
                     <ButtonGroup>
                         <Button className="border-0" aria-label="reduce" onClick={() =>  decreaseHandler() }><RemoveIcon fontSize="small" /></Button>
-                          <h1>{inCart.qty}</h1>
+                          <h5 className="mt-1">{inCart.qty}</h5>
                         <Button className="border-0" aria-label="increase" onClick={() => increaseHandler()}><AddIcon fontSize="small" /></Button>
                     </ButtonGroup>
           }
@@ -558,7 +558,7 @@ const colorHandler = (eve) => {
 
           {showMore ? <p id="c-p" className="text-info" onClick={() => setShowMore(false)} ><FaAngleUp /> Close</p> : <p className="blue mt-5 mb-0" style={{cursor:'pointer'}} onClick={() => setShowMore(true)}>See more detail</p>}
 
-{showMore && <p>{data.about_this_item.map(ev => <p>&#8226; {ev}</p>)}</p> }
+{showMore && <p>{data.about_this_item.map(ev => <p key={ev}>&#8226; {ev}</p>)}</p> }
 
         
 
@@ -664,19 +664,17 @@ const colorHandler = (eve) => {
                   <div>
 
                     {user ?
-                    <form className="d-flex flex-column">
+                      <form className="d-flex flex-column">
                       {/* <input type="number" min={1} max={5} ref={ratingRef}/> */}
                       <Rating name="no-value" size="large" precision={1} onChange={(ev) => setRating(ev.target.value)} />
-                      <textarea
-                        placeholder="Submit your review ..."
-                        cols="30"
-                        rows="10"
-                        className="w-100 form-control"
-                        ref={reviewRef}
-                      ></textarea>
+                      <textarea placeholder="Submit your review ..."  cols="30"  rows="10"  className="w-100 form-control"  ref={reviewRef}></textarea>
                       <div className="d-flex justify-content-end" id="a-c">
                         <h3 className="text-danger">{reviewErr}</h3>
-                        <button className="btn" onClick={reviewHandler}> Submit Review</button>
+                      {loadingRev ? 
+                        <h1 className="loading2 text-center w-25 p-0 m-0"/>
+                      :
+                        <button className="btn" onClick={reviewHandler}>Submit Review</button>
+                      }
                       </div>
                     </form> 
                     :
@@ -684,7 +682,7 @@ const colorHandler = (eve) => {
                     }
                     <div id="d-g">
 
-                  {data.review.map((ev, i) => (
+                  {data.review.toReversed().map((ev, i) => (
                     <div key={i} id="between">
                       <p>{ev.review}</p>
                       <Rating name="half-rating-read" size="small" defaultValue={ev.rating} precision={0.5} readOnly />

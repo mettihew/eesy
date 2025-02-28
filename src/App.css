@@ -533,7 +533,6 @@ gap: 20px;
 
 .products-box-search {
   display: flex;
-  cursor: pointer;
   border: 1px solid grey;
 }
 
@@ -677,6 +676,13 @@ gap: 20px;
       animation: dotty steps(1,end) 1s infinite;
       content: '';
     }
+    /* I just removed padding to be more beautiful you can delete below code  */
+    .loading2{
+      padding: 0;
+      margin: 0;
+      width: 25px;
+      font-size: 25px;
+    }
     
     @keyframes dotty {
         0%   { content: ''; }
@@ -735,7 +741,7 @@ gap: 20px;
 .searchModal {
   width: 380px;
   height: fit-content;
-  top: 50px;
+  top: 55px;
   display: grid;
   background-color: white;
   color: black;

@@ -55,6 +55,9 @@ function Header(props) {
 
   }, []);
 
+  // console.log(cartLength, 'cartlenght in hesader');
+  
+
   const url = window.location.search; 
   let key;
   let cat;
@@ -107,15 +110,15 @@ if(!type) searchMap = null
     ev.preventDefault();
 
     const search = JSON.parse(localStorage.getItem('search'))
-      if(search){
-        if(search.includes(type)) return
-        search.push(type)
-        localStorage.setItem('search', JSON.stringify(search))
-      }
-      if(!search){
-        const search = [type]
-        localStorage.setItem('search', JSON.stringify(search))
-      } // make history ends
+    if(search && type){
+    if(search.includes(type)) return
+    search.push(type)
+    localStorage.setItem('search', JSON.stringify(search))
+  }
+  if(!search && type){
+      const search = [type]
+      localStorage.setItem('search', JSON.stringify(search))
+    } // make history ends
 
     if (category && !type) {
       window.location.href = `/category?cat=${category}`;
@@ -138,7 +141,6 @@ if(!type) searchMap = null
     // props.onBlur(true);
     props.onOpen(true)
     // setSearchModal(true);
-
 
     // if (type && category) {
     //   axios
@@ -300,8 +302,6 @@ if(!type) searchMap = null
  <a href="/account" id="no-a" style={{marginRight:'15px'}} className="d-flex"><FaRegUser size={'20px'} cursor={'pointer'}/></a>
 }
 
- 
-
       {/* <div style={{marginTop:'-4px'}}> */}
       <div>
       <a href="/cart">
@@ -314,7 +314,6 @@ if(!type) searchMap = null
     </div>
 
 </div>
-
 
 <div id="a-c" style={{ border: props.downBit ? "2px solid orange" : ""}} className= "search-div-width" >
 

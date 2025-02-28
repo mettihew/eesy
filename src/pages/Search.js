@@ -116,7 +116,7 @@ axios.post(`${URL}/search-all${query}`)
                 <div className="best-seller-orange-none"/>
               }
 
-              <div className="products-box-search" style={{borderRadius: !ev.best_seller ? "10px 10px 0 0" : "", marginTop: ev.best_seller && "10px",  }}>
+              <div className="products-box-search cursor-pointer" style={{borderRadius: !ev.best_seller ? "10px 10px 0 0" : "", marginTop: ev.best_seller && "10px",  }}>
 
                 <div className="d-flex">
 
